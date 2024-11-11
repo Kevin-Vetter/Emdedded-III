@@ -7,7 +7,10 @@
     xmlns:viewModel="clr-namespace:ToDoApp.ViewModels"
     Title="Home"
     x:DataType="viewModel:MainPageViewModel">
-
+    <ContentPage.ToolbarItems>
+        
+    </ContentPage.ToolbarItems>
+    
     <RefreshView Command="{Binding GetItemsCommand}" IsRefreshing="{Binding IsRefreshing}">
         <CollectionView
             BackgroundColor="LightGray"
@@ -28,6 +31,13 @@
                                     FontSize="14"
                                     LineBreakMode="TailTruncation"
                                     Text="{Binding Description}" />
+                                <Label
+                                    Grid.Row="1"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"
+                                    Margin="0,15,0,0"
+                                    Text="{Binding CreateTime}" />
                             </Grid>
 
                         </Frame>

@@ -45,14 +45,5 @@ namespace ToDoApp.ViewModels
                 IsRefreshing = false;
             }
         }
-
-
-        bool _isRefreshing;
-        public bool IsRefreshing
-        {
-            get => _isRefreshing;
-            set => SetProperty(ref _isRefreshing, value);
-        }
-
     }
 }

@@ -14,10 +14,10 @@ namespace ToDoApp.Service
         {
             items = new List<TodoItem>()
             {
-                new TodoItem { Id = 1, Description = "1", Completed = false, CreateTime = DateTime.Now, Priority = PriorityLevel.Low },
-                new TodoItem { Id = 2, Description = "2", Completed = true, CreateTime = DateTime.Now, Priority = PriorityLevel.High },
-                new TodoItem { Id = 3, Description = "3", Completed = true, CreateTime = DateTime.Now, Priority = PriorityLevel.Medium },
-                new TodoItem { Id = 4, Description = "4", Completed = false, CreateTime = DateTime.Now, Priority = PriorityLevel.Low },
+                new TodoItem { Id = 1, Description = "Description", Completed = false, CreateTime = DateTime.Now, Priority = PriorityLevel.Low },
+                new TodoItem { Id = 2, Description = "Not a description", Completed = true, CreateTime = DateTime.Now, Priority = PriorityLevel.High },
+                new TodoItem { Id = 3, Description = "Jeg elsker goth gym mommy", Completed = true, CreateTime = DateTime.Now, Priority = PriorityLevel.Medium },
+                new TodoItem { Id = 4, Description = "Max er 23cm ;)", Completed = false, CreateTime = DateTime.Now, Priority = PriorityLevel.Low },
             };
         }
         public IEnumerable<TodoItem> GetTodos()
