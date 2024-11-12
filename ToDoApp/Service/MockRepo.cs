@@ -9,7 +9,7 @@ namespace ToDoApp.Service
 {
     public class MockRepo : IToDoService
     {
-        private IEnumerable<TodoItem> items { get; set; }
+        private List<TodoItem> items { get; set; }
         public MockRepo()
         {
             items = new List<TodoItem>()
@@ -20,9 +20,14 @@ namespace ToDoApp.Service
                 new TodoItem { Id = 4, Description = "Max er 23cm ;)", Completed = false, CreateTime = DateTime.Now, Priority = PriorityLevel.Low },
             };
         }
-        public IEnumerable<TodoItem> GetTodos()
+        public List<TodoItem> GetTodos()
         {
-            return items;
+            return new(items);
+        }
+
+        public async Task Save(TodoItem item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

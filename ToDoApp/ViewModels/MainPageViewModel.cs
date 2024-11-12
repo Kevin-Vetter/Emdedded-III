@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoApp.Models;
 using ToDoApp.Service;
+using ToDoApp.Views;
 
 namespace ToDoApp.ViewModels
 {
@@ -44,6 +45,15 @@ namespace ToDoApp.ViewModels
                 IsBusy = false;
                 IsRefreshing = false;
             }
+        }
+
+        [RelayCommand]
+        async Task GoToItemAddEdit(TodoItem item)
+        {
+            await Shell.Current.GoToAsync(nameof(AddEditToDoPage), new Dictionary<string, object>
+            {
+                {"item", item }
+            });
         }
     }
 }

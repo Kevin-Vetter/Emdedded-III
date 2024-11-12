@@ -9,7 +9,8 @@ namespace ToDoApp.Service
 {
     public interface IToDoService
     {
-        IEnumerable<TodoItem> GetTodos();
+        List<TodoItem> GetTodos();
 
+        Task Save(TodoItem item);
     }
 }

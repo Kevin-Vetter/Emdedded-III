@@ -14,6 +14,7 @@ namespace ToDoApp.Views
 
         protected override void OnAppearing()
         {
+            base.OnAppearing();
             _vm.GetItemsCommand.Execute(null);
 
         }

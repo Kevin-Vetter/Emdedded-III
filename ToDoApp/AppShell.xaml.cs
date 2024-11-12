@@ -9,7 +9,6 @@ namespace ToDoApp
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
             Routing.RegisterRoute(nameof(AddEditToDoPage), typeof(AddEditToDoPage));
         }
     }
