@@ -13,10 +13,37 @@ namespace ToDoApp.ViewModels
 {
 
 
-    [QueryProperty(nameof(TodoItem), "item")]
+    [QueryProperty(nameof(Item), "item")]
     public partial class AddEditToDoViewModel(IToDoService service) : BaseViewModel
     {
         [ObservableProperty]
-        TodoItem Item; 
+        TodoItem item;
+
+        bool isNewItem;
+
+        void OnTodoItemChanging(TodoItem value)
+        {
+            isNewItem = string.IsNullOrWhiteSpace(value.CreateTime.ToString()) ? true : false;
+        }
+
+        [RelayCommand]
+        async Task Save()
+        {
+            await service.SaveTaskAsync(Item, isNewItem);
+            await Shell.Current.GoToAsync("..");
+        }
+
+        [RelayCommand]
+        async Task Delete()
+        {
+            await service.DeleteTaskAsync(Item);
+            await Shell.Current.GoToAsync("..");
+        }
+
+        [RelayCommand]
+        async Task Cancel()
+        {
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }

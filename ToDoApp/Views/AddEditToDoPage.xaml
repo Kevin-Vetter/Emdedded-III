@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ToDoApp.Views.AddEditToDoPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:model="clr-namespace:ToDoApp.Models"
     xmlns:vm="clr-namespace:ToDoApp.ViewModels"
-    Title="{Binding Title}"
-    x:DataType="vm:AddEditToDoViewModel">
+    x:DataType="vm:AddEditToDoViewModel"
+    x:Class="ToDoApp.Views.AddEditToDoPage"
+    Title="{Binding Title}">
+    <ContentPage.Resources>
 
+        <Style TargetType="Button">
+            <Setter Property="Margin"
+                    Value="5" />
+        </Style>
+    </ContentPage.Resources>
 
     <VerticalStackLayout Margin="20">
         <Label Text="Name" />
-        <Entry Placeholder="Enter item" Text="{Binding Path=TodoItem.Description}" />
+        <Entry Placeholder="Enter item" Text="{Binding Path=Item.Description}" />
         <Label Text="Notes" />
-        <Entry Placeholder="Enter notes" Text="{Binding Path=TodoItem.Notes}" />
+        <Entry Placeholder="Enter notes" Text="{Binding Path=Item.Id}" />
         <Label Text="Done" />
-        <Switch IsToggled="{Binding Path=TodoItem.IsComplete}" />
+        <Switch IsToggled="{Binding Path=Item.Completed}" />
         <Button Command="{Binding SaveCommand}" Text="Save" />
-        <Button Command="{Binding DeleteCommand}" Text="Delete" />
-        <Button Command="{Binding CancelCommand}" Text="Cancel" />
+        <Button Command="{Binding DeleteCommand}" Text="Delete"/>
+        <Button Command="{Binding CancelCommand}" Text="Cancel"/>
     </VerticalStackLayout>
 
 </ContentPage>

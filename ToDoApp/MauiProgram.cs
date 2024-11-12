@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using ToDoApp.Service;
+using ToDoApp.Services;
 using ToDoApp.ViewModels;
 using ToDoApp.Views;
 
@@ -17,16 +18,19 @@ namespace ToDoApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            builder.Services.AddSingleton(Connectivity.Current);
 
-            builder.Services.AddSingleton<IToDoService,MockRepo>();
+            builder.Services.AddSingleton<IToDoService, MockRepo>();
+            builder.Services.AddSingleton<IRestService, RestService>();
+
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainPageViewModel>();
 
-            builder.Services.AddTransient<AddEditToDoPage>();
             builder.Services.AddTransient<AddEditToDoViewModel>();
+            builder.Services.AddTransient<AddEditToDoPage>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

@@ -8,7 +8,6 @@ namespace ToDoApp.Views
         public AddEditToDoPage(AddEditToDoViewModel vm)
         {
             InitializeComponent();
-            _vm = vm;
             BindingContext = vm;
         }
     }

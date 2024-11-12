@@ -27,7 +27,7 @@ namespace ToDoApp.ViewModels
                 IsBusy = true;
                 IsRefreshing = true;
 
-                var items = service.GetTodos();
+                var items = await service.GetTasksAsync();
                 List<int> tal = new();
                 if (Items.Count != 0)
                     Items.Clear();
