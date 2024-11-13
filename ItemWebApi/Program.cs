@@ -36,7 +36,7 @@ static async Task<IResult> GetAllTodos(TodoDbContext db)
 
 static async Task<IResult> GetCompleteTodos(TodoDbContext db)
 {
-    return TypedResults.Ok(await db.Todos.Where(t => t.IsComplete).ToListAsync());
+    return TypedResults.Ok(await db.Todos.Where(t => t.Completed).ToListAsync());
 }
 
 static async Task<IResult> GetTodo(int id, TodoDbContext db)
@@ -49,6 +49,7 @@ static async Task<IResult> GetTodo(int id, TodoDbContext db)
 
 static async Task<IResult> CreateTodo(Todo todo, TodoDbContext db)
 {
+    todo.CreateTime = DateTime.UtcNow;
     db.Todos.Add(todo);
     await db.SaveChangesAsync();
 
@@ -61,8 +62,9 @@ static async Task<IResult> UpdateTodo(int id, Todo inputTodo, TodoDbContext db)
 
     if (todo is null) return TypedResults.NotFound();
 
-    todo.Name = inputTodo.Name;
-    todo.IsComplete = inputTodo.IsComplete;
+    todo.Head = inputTodo.Head;
+    todo.Body = inputTodo.Body;
+    todo.Completed = inputTodo.Completed;
 
     await db.SaveChangesAsync();
 

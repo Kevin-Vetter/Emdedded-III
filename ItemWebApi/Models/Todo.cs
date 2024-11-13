@@ -6,13 +6,10 @@ namespace ItemWebApi.Models
     {
         [Required]
         public int Id { get; set; }
-
         [Required]
-        public string? Name { get; set; }
-
-        [Required]
-        public string? Notes { get; set; }
-
-        public bool IsComplete { get; set; }
+        public string? Head { get; set; }
+        public string? Body { get; set; }
+        public DateTime CreateTime { get; set; }
+        public bool Completed { get; set; }
     }
 }

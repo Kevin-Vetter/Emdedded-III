@@ -8,9 +8,9 @@ POST {{devtunnel}}/todoitems
 Content-Type: application/json
 
 {
-  "name": "Walk cat",
-  "notes": "In the rain",
-  "isComplete": false
+  "head": "Walk cat",
+  "body": "In the rain",
+  "completed": false
 }
 
 ###
@@ -23,9 +23,9 @@ PUT {{devtunnel}}/todoitems/1
 Content-Type: application/json
 
 {
-  "name": "Walk dog",
-  "notes": "In the rain",
-  "isComplete": true
+  "head": "xxxx",
+  "body": "yyy",
+  "completed": true
 }
 
 ###

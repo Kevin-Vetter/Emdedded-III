@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ItemWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initials : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,9 +17,10 @@ namespace ItemWebApi.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Notes = table.Column<string>(type: "TEXT", nullable: false),
-                    IsComplete = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Head = table.Column<string>(type: "TEXT", nullable: false),
+                    Body = table.Column<string>(type: "TEXT", nullable: true),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Completed = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

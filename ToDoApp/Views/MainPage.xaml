@@ -9,7 +9,7 @@
     x:DataType="vm:MainPageViewModel">
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GoToItemAddEditCommand}" Text="Tilføj" />
-        <ToolbarItem Text="Notify"/>
+        <ToolbarItem Text="Notify" />
     </ContentPage.ToolbarItems>
 
     <RefreshView Command="{Binding GetItemsCommand}" IsRefreshing="{Binding IsRefreshing}">
@@ -34,16 +34,15 @@
                                     FontAttributes="Bold"
                                     FontSize="14"
                                     LineBreakMode="TailTruncation"
-                                    Text="{Binding Description}" />
+                                    Text="{Binding Head}" />
                                 <Label
                                     Grid.Row="1"
                                     Margin="0,15,0,0"
                                     FontAttributes="Bold"
                                     FontSize="14"
                                     LineBreakMode="TailTruncation"
-                                    Text="{Binding CreateTime}" />
+                                    Text="{Binding Body}" />
                             </Grid>
-
                         </Frame>
                     </Grid>
 
