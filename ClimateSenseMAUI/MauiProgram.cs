@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ClimateSenseMAUI.View;
+using Microsoft.Extensions.Logging;
 
 namespace ClimateSenseMAUI
 {
@@ -15,6 +16,8 @@ namespace ClimateSenseMAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<LoginPa>();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
