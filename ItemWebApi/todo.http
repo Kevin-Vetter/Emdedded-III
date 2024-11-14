@@ -1,0 +1,33 @@
+@devtunnel = https://dhqxlmt6-7245.euw.devtunnels.ms
+
+GET {{devtunnel}}/todoitems
+
+###
+
+POST {{devtunnel}}/todoitems
+Content-Type: application/json
+
+{
+  "name": "Walk cat",
+  "notes": "In the rain",
+  "isComplete": false
+}
+
+###
+
+GET {{devtunnel}}/todoitems/1
+
+###
+
+PUT {{devtunnel}}/todoitems/1
+Content-Type: application/json
+
+{
+  "name": "Walk dog",
+  "notes": "In the rain",
+  "isComplete": true
+}
+
+###
+
+DELETE {{devtunnel}}/todoitems/1
