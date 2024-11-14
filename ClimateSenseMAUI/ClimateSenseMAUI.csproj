@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+   <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
@@ -57,10 +57,50 @@
 	</ItemGroup>
 
 	<ItemGroup>
+<<<<<<< HEAD
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
+=======
+		<PackageReference Include="Auth0.OidcClient.MAUI" Version="1.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+>>>>>>> origin/staging
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.1.58" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="27.1.58" />
+	</ItemGroup>
+
+	<ItemGroup>
+<<<<<<< HEAD
+	  <Folder Include="Model\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ClimateSenseModels\ClimateSenseModels.csproj" />
+	  <ProjectReference Include="..\ClimateSenseService\ClimateSenseService.csproj" />
+	</ItemGroup>
+
+=======
+	  <Compile Update="View\LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="View\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	 
+>>>>>>> origin/staging
+   <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+		<PackageReference Include="Auth0.OidcClient.MAUI" Version="1.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.1.58" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="27.1.58" />
 	</ItemGroup>
@@ -72,7 +112,19 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\ClimateSenseModels\ClimateSenseModels.csproj" />
 	  <ProjectReference Include="..\ClimateSenseService\ClimateSenseService.csproj" />
+
+	<ItemGroup>
+	  <Compile Update="View\LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="View\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	 
 
 </Project>
