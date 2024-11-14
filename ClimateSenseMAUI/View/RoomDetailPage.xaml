@@ -3,11 +3,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
-             x:Class="ClimateSenseMAUI.View.HumidityPage">
+             xmlns:vm="clr-namespace:ClimateSenseMAUI.ViewModel"
+             x:Class="ClimateSenseMAUI.View.RoomDetailPage">
     <ContentPage.Content>
         <chart:SfCartesianChart>
             <chart:SfCartesianChart.Resources>
-                <DoubleCollection x:Key="dashArray">
+                <DoubleCollection x:Key="DashArray">
                     <x:Double>5</x:Double>
                     <x:Double>2</x:Double>
                 </DoubleCollection>
@@ -21,10 +22,10 @@
                 <chart:NumericalAxis/>
             </chart:SfCartesianChart.YAxes>  
 
-            <chart:FastLineSeries ItemsSource="{Binding Data}"
+            <chart:FastLineSeries ItemsSource="{Binding currentMeasurement}"
                                   XBindingPath="XValue"
                                   YBindingPath="YValue" 
-                                  StrokeDashArray="{StaticResource dashArray}"/>
+                                  StrokeDashArray="{StaticResource DashArray}"/>
         </chart:SfCartesianChart>
     </ContentPage.Content>
 </ContentPage>

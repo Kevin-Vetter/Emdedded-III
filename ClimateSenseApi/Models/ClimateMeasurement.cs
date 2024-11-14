@@ -1,7 +1,7 @@
 using InfluxDB.Client.Core;
 
 namespace ClimateSenseApi.Models;
-
+    
 [Measurement(nameof(ClimateMeasurement))]
 public class ClimateMeasurement
 {

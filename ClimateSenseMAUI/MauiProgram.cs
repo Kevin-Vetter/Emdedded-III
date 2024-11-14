@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ClimateSenseMAUI.View;
+using ClimateSenseMAUI.ViewModel;
+using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 
 namespace ClimateSenseMAUI
@@ -20,6 +22,9 @@ namespace ClimateSenseMAUI
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            
+            builder.Services.AddTransient<RoomDetailPage>(); 
+            builder.Services.AddTransient<RoomDetailViewModel>();
 
             return builder.Build();
         }
