@@ -10,6 +10,7 @@ public class ApiService : IApiService
     HttpClient _client;
     JsonSerializerOptions _serializerOptions;
     public List<ClimateMeasurement> Items { get; private set; }
+    public List<string> Locations { get; private set; }
 
     public ApiService()
     {
@@ -43,27 +44,18 @@ public class ApiService : IApiService
         return Items;
     }
 
-    public async Task SaveClimateMeasurementAsync(ClimateMeasurement item, bool isNewItem = false)
+    public async Task GetLocations()
     {
         try
         {
-            string json = JsonSerializer.Serialize<ClimateMeasurement>(item, _serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
             HttpResponseMessage response = null;
-            if (isNewItem)
-            {
-                UriBuilder builder = new(Constants.BaseUrl) { Path = Constants.Endpoint };
-                response = await _client.PostAsync(builder.Uri, content);
-            }
-            else
-            {
-                UriBuilder builder = new(Constants.BaseUrl) { Path = $"{Constants.Endpoint}/{item.Location}" };
-                response = await _client.PutAsync(builder.Uri, content);
-            }
-
+            UriBuilder builder = new(Constants.BaseUrl) { Path = "/Locations" };
+            response = await _client.GetAsync(builder.Uri);
             if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Locations = JsonSerializer.Deserialize<List<string>>(content, _serializerOptions);
+            }
         }
         catch (Exception ex)
         {
@@ -71,19 +63,26 @@ public class ApiService : IApiService
         }
     }
 
-    public async Task DeleteClimateMeasurementAsync(int id)
+    public async Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type)
     {
-        UriBuilder builder = new(Constants.BaseUrl) { Path = $"{Constants.Endpoint}/{id}" };
-
+        Items.Clear();
+        Items = new List<ClimateMeasurement>();
         try
         {
-            HttpResponseMessage response = await _client.DeleteAsync(builder.Uri);
+            HttpResponseMessage response = null;
+            UriBuilder builder = new(Constants.BaseUrl) { Path = $"{"?location="+room+"&from="+from+"&type="+type}" };
+            response = await _client.GetAsync(builder.Uri);
             if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully deleted.");
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Items = JsonSerializer.Deserialize<List<ClimateMeasurement>>(content, _serializerOptions);
+            }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
+        return Items;
     }
+    
 }

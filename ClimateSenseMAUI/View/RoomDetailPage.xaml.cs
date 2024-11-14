@@ -17,8 +17,4 @@ public partial class RoomDetailPage : ContentPage
         BindingContext = viewModel;
     }
     
-    protected override void OnAppearing()
-    {
-        _viewModel.GetRoomCommandCommand.Execute(null);
-    }
 }

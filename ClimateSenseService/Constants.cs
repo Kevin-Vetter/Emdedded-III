@@ -2,6 +2,6 @@ namespace ClimateSenseService;
 
 public class Constants
 {
-    public static string BaseUrl = "https://6t0pcctr-5117.euw.devtunnels.ms";
-    public static string Endpoint = "";
+    public static string BaseUrl = "https://localhost:7048";
+    public static string Endpoint = "Measurement";
 }

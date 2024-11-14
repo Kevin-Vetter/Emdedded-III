@@ -1,9 +1,8 @@
 ﻿using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
+using ClimateSenseService;
 using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
 using Syncfusion.Maui.Core.Hosting;
 
 namespace ClimateSenseMAUI
@@ -38,6 +37,8 @@ namespace ClimateSenseMAUI
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
             
             builder.Services.AddTransient<RoomDetailPage>(); 
             builder.Services.AddTransient<RoomDetailViewModel>();

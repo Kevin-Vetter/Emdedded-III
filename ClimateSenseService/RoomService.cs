@@ -2,7 +2,7 @@ using ClimateSenseModels;
 
 namespace ClimateSenseService;
 
-public class RoomService(IApiService apiService)
+public class RoomService(IApiService apiService) : IRoomService
 {
     public Task<List<ClimateMeasurement>> GetClimateMeasurements() => apiService.RefreshDataAsync();
     public Task SaveRoomSettingAsync(ClimateMeasurement item, bool isNewItem = false)

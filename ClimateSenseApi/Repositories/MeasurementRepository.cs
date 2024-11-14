@@ -24,7 +24,7 @@ public class MeasurementRepository(MeasurementContext context) : IMeasurementRep
 
         if (from != null)
         {
-            query = query.Where(x => x.Timestamp == from);
+            query = query.Where(x => x.Timestamp >= from);
         }
 
         if (measurementType != null)
