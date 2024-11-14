@@ -7,12 +7,12 @@ using MQTTnet.Client;
 
 namespace ClimateSenseApi.BackgroundServices;
 
-public class TelemetryWorkerService(ILogger<TelemetryWorkerService> logger, IMqttService mqttService, IInfluxDbService influxDbService) : BackgroundService
+public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, IMqttService mqttService, IInfluxDbService influxDbService) : BackgroundService
 {
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         await mqttService.Connect();
-        await mqttService.Subscribe("dht", OnMessageReceived);
+        await mqttService.Subscribe("measurement/+", OnMessageReceived);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,10 +25,7 @@ public class TelemetryWorkerService(ILogger<TelemetryWorkerService> logger, IMqt
 
     private async Task OnMessageReceived(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
-        Telemetry? telemetry = JsonSerializer.Deserialize<Telemetry>(Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment));
-
-        logger.LogInformation($"Temperature: {telemetry?.Temperature}");
-        logger.LogInformation($"Humidity: {telemetry?.Humidity}");
+        ClimateMeasurement? telemetry = JsonSerializer.Deserialize<ClimateMeasurement>(Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment));
 
         if (telemetry != null)
             await influxDbService.Write(telemetry);
