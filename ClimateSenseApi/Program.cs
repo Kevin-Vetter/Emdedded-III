@@ -4,8 +4,11 @@ using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
 using ClimateSenseApi.BackgroundServices;
+using ClimateSenseApi.Contexts;
 using ClimateSenseApi.Models;
-using ClimateSenseApi.Services;
+using ClimateSenseApi.Repositories;
+using ClimateSenseServices;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptions<AppSettings>().Bind(builder.Configuration);
+builder.Services.AddDbContext<MeasurementContext>(x => x.UseSqlite("Name=Measurement"));
 builder.Services.AddSingleton<MqttFactory>();
 builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
 {
@@ -37,8 +41,8 @@ builder.Services.AddSingleton<MqttClientOptionsBuilder>(serviceProvider =>
         .WithWillRetain();
 });
 builder.Services.AddSingleton<IMqttService, MqttService>();
-builder.Services.AddSingleton<IInfluxDbService, InfluxDbService>();
-builder.Services.AddHostedService<TelemetryWorkerService>();
+builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
+builder.Services.AddHostedService<MeasurementWorkerService>();
 
 var app = builder.Build();
 

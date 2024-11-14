@@ -1,7 +1,7 @@
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 
-namespace ClimateSenseApi.Services;
+namespace ClimateSenseServices;
 
 public interface IMqttService
 {

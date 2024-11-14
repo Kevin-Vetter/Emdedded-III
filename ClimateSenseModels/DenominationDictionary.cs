@@ -1,4 +1,4 @@
-﻿namespace ClimateSenseMAUI.Model
+﻿namespace ClimateSenseModels
 {
     public static class DenominationDictionary
     {

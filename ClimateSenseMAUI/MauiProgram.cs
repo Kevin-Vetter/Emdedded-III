@@ -1,9 +1,12 @@
 ﻿using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
+using ClimateSenseServices;
 using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
+using MQTTnet;
+using MQTTnet.Client;
+using MQTTnet.Formatter;
+using MQTTnet.Protocol;
 
 namespace ClimateSenseMAUI
 {
@@ -31,6 +34,27 @@ namespace ClimateSenseMAUI
                 Scope = Appsettings.Auth0["Scope"]
             }));
 
+            builder.Services.AddSingleton(serviceProvider =>
+            {
+                return new MqttClientOptionsBuilder()
+                    .WithTcpServer(Appsettings.MqttBroker["Host"])
+                    .WithCredentials(Appsettings.MqttBroker["Username"], Appsettings.MqttBroker["Password"])
+                    .WithTlsOptions(x => x.UseTls())
+                    .WithProtocolVersion(MqttProtocolVersion.V311)
+                    .WithWillTopic("health")
+                    .WithWillPayload("dead")
+                    .WithWillQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                    .WithWillRetain();
+            });
+            builder.Services.AddSingleton<MqttFactory>();
+            builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
+            {
+                MqttFactory mqttFactory = serviceProvider.GetRequiredService<MqttFactory>();
+                IMqttClient mqttClient = mqttFactory.CreateMqttClient();
+                return mqttClient;
+            });
+            builder.Services.AddSingleton<IMqttService, MqttService>();
+            builder.Services.AddSingleton<NotificationViewModel>();
 
             builder.Services.AddSingleton<DashboardPage>();
             builder.Services.AddSingleton<DashboardViewModel>();
