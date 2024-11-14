@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClimateSenseMAUI.ViewModel
 {
-    public partial class BaseViewModel
+    public partial class BaseViewModel : ObservableObject
     {
         [ObservableProperty]
         private bool isRefreshing = false;
