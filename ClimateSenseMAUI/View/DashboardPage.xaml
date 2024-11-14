@@ -2,7 +2,18 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ClimateSenseMAUI.View.DashboardPage">
-    <ContentPage.Content>
-    </ContentPage.Content>
+             x:Class="ClimateSenseMAUI.View.DashboardPage"
+             xmlns:vm="clr-namespace:ClimateSenseMAUI.ViewModel"
+             x:DataType="vm:DashboardViewModel"
+             Title="Dashboard">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False"/> 
+    </Shell.BackButtonBehavior>
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem Command="{Binding OpenSettingsCommand}" IconImageSource="gear.png" />-->
+        <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png" />
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout>
+        
+    </VerticalStackLayout>
 </ContentPage>

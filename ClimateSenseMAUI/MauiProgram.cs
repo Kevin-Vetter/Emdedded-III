@@ -24,15 +24,19 @@ namespace ClimateSenseMAUI
 
             builder.Services.AddSingleton(new Auth0Client(new()
             {
-                Domain = "dev-dpa8tyoky8r1sgd3.us.auth0.com",
-                ClientId = "KkEXTxrvVtvqnD2HYtOFss2NP1xf7rbD",
-                RedirectUri = "myapp://callback/",
-                PostLogoutRedirectUri = "myapp://callback/",
-                Scope = "openid profile email"
+                Domain = Appsettings.Auth0["Domain"],
+                ClientId = Appsettings.Auth0["ClientId"],
+                RedirectUri = Appsettings.Auth0["RedirectUri"],
+                PostLogoutRedirectUri = Appsettings.Auth0["PostLogoutRedirectUri"],
+                Scope = Appsettings.Auth0["Scope"]
             }));
 
-            builder.Services.AddSingleton<LoginPage>();
-            builder.Services.AddSingleton<LoginViewModel>();
+
+            builder.Services.AddSingleton<DashboardPage>();
+            builder.Services.AddSingleton<DashboardViewModel>();
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<LoginViewModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

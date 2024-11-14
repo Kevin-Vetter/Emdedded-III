@@ -1,3 +1,4 @@
+using ClimateSenseMAUI.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,9 @@ namespace ClimateSenseMAUI.View;
 
 public partial class DashboardPage : ContentPage
 {
-    public DashboardPage()
+    public DashboardPage(DashboardViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }
