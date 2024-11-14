@@ -17,13 +17,19 @@ public partial class RoomDetailViewModel : BaseViewModel
     }
     // Find out how telemetry data model looks like.  Then work it out from there, becasue atm i have no clue :D
 
-    [ObservableProperty] ClimateMeasurement currentMeasurement;
+    private ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();
 
 
     [RelayCommand]
     async Task GetRoomCommand()
     {
-        
+        var messurement = await _apiService.RefreshDataAsync();
+        Measurementlist.Clear();
+        foreach (var item in messurement)
+        {
+            messurement.Add(item);
+        }
+
     }
     
     
