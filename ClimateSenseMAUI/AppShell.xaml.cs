@@ -17,7 +17,7 @@ namespace ClimateSenseMAUI
         {
             _mqttService = IPlatformApplication.Current!.Services.GetRequiredService<IMqttService>();
             InitializeComponent();
-
+            Routing.RegisterRoute(nameof(RoomDetailPage), typeof(RoomDetailPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
             BindingContext = IPlatformApplication.Current?.Services.GetRequiredService<NotificationViewModel>();
