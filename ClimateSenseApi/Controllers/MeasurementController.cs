@@ -1,4 +1,5 @@
 using ClimateSenseApi.Models;
+using ClimateSenseApi.Repositories;
 using ClimateSenseApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,17 +7,17 @@ namespace ClimateSenseApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MeasurementController(IInfluxDbService influxDbService) : ControllerBase
+public class MeasurementController(IMeasurementRepository measurementRepository) : ControllerBase
 {
     [HttpGet("locations")]
-    public List<string> GetList()
+    public async Task<List<string>> GetList()
     {
-        return influxDbService.GetLocations();
+        return await measurementRepository.GetLocations();
     }
 
     [HttpGet("")]
-    public List<ClimateMeasurement> GetMeasurements(string? location, DateTime? from, int? measurementType)
+    public async Task<List<Measurement>> GetMeasurements(string? location, DateTime? from, int? measurementType)
     {
-        return influxDbService.GetMeasurements(location, from, measurementType);
+        return await measurementRepository.GetMeasurements(location, from, measurementType);
     }
 }
