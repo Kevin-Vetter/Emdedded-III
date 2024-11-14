@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ClimateSenseMAUI.ViewModel;
 
-[QueryProperty(nameof(ClimateMeasurement), "room")]
+// [QueryProperty(nameof(ClimateMeasurement), "room")]
 public partial class RoomDetailViewModel : BaseViewModel
 {
 
