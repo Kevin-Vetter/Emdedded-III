@@ -4,8 +4,11 @@ using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
 using ClimateSenseApi.BackgroundServices;
+using ClimateSenseApi.Contexts;
 using ClimateSenseApi.Models;
+using ClimateSenseApi.Repositories;
 using ClimateSenseApi.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +39,9 @@ builder.Services.AddSingleton<MqttClientOptionsBuilder>(serviceProvider =>
         .WithWillQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
         .WithWillRetain();
 });
+builder.Services.AddDbContext<MeasurementContext>(x => x.UseSqlite("Name=Measurement"));
 builder.Services.AddSingleton<IMqttService, MqttService>();
-builder.Services.AddSingleton<IInfluxDbService, InfluxDbService>();
+builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 builder.Services.AddHostedService<MeasurementWorkerService>();
 
 var app = builder.Build();
