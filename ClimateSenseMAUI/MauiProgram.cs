@@ -11,6 +11,8 @@ namespace ClimateSenseMAUI
     {
         public static MauiApp CreateMauiApp()
         {
+            AppContext.SetSwitch("System.Reflection.NullabilityInfoContext.IsSupported", true);
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -20,12 +22,13 @@ namespace ClimateSenseMAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton(new Auth0Client(new Auth0ClientOptions
+            builder.Services.AddSingleton(new Auth0Client(new()
             {
                 Domain = "dev-dpa8tyoky8r1sgd3.us.auth0.com",
                 ClientId = "KkEXTxrvVtvqnD2HYtOFss2NP1xf7rbD",
                 RedirectUri = "myapp://callback/",
-                Scope = "openid profile"
+                PostLogoutRedirectUri = "myapp://callback/",
+                Scope = "openid profile email"
             }));
 
             builder.Services.AddSingleton<LoginPage>();
