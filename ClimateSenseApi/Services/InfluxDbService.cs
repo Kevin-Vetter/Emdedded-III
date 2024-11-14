@@ -21,16 +21,39 @@ public class InfluxDbService : IInfluxDbService
         });
     }
 
-    public async Task Write(Telemetry telemetry)
+    public async Task Write(ClimateMeasurement measurement)
     {
         WriteApiAsync writeApi = _client.GetWriteApiAsync();
-        await writeApi.WriteMeasurementAsync(new TelemetryMeasurement() { Device = "dht", Temperature = telemetry.Temperature, Humidity = telemetry.Humidity});
+        await writeApi.WriteMeasurementAsync(measurement);
     }
 
-    public List<TelemetryMeasurement> Read()
+    public List<ClimateMeasurement> GetMeasurements(string? location, DateTime? from, int? measurementType)
     {
         QueryApiSync queryApi = _client.GetQueryApiSync();
 
-        return InfluxDBQueryable<TelemetryMeasurement>.Queryable(_influxDbSettings.Bucket, _influxDbSettings.OrganizationId, queryApi).ToList();
+        IQueryable<ClimateMeasurement> query = InfluxDBQueryable<ClimateMeasurement>.Queryable(_influxDbSettings.Bucket, _influxDbSettings.OrganizationId, queryApi).AsQueryable();
+
+        if (!string.IsNullOrEmpty(location))
+        {
+            query = query.Where(x => x.Location == location);
+        }
+
+        if (from != null)
+        {
+            query = query.Where(x => x.Timestamp == from);
+        }
+
+        if (measurementType != null)
+        {
+            query = query.Where(x => x.MeasurementType == measurementType);
+        }
+
+        return query.ToList();
+    }
+
+    public List<string> GetLocations()
+    {
+        QueryApiSync queryApi = _client.GetQueryApiSync();
+        return InfluxDBQueryable<ClimateMeasurement>.Queryable(_influxDbSettings.Bucket, _influxDbSettings.OrganizationId, queryApi).Select(x => x.Location).Distinct().ToList();
     }
 }
