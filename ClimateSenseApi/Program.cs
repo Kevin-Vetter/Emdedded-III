@@ -38,7 +38,7 @@ builder.Services.AddSingleton<MqttClientOptionsBuilder>(serviceProvider =>
 });
 builder.Services.AddSingleton<IMqttService, MqttService>();
 builder.Services.AddSingleton<IInfluxDbService, InfluxDbService>();
-builder.Services.AddHostedService<TelemetryWorkerService>();
+builder.Services.AddHostedService<MeasurementWorkerService>();
 
 var app = builder.Build();
 

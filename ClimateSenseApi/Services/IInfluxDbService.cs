@@ -4,6 +4,7 @@ namespace ClimateSenseApi.Services;
 
 public interface IInfluxDbService
 {
-    Task Write(Telemetry telemetry);
-    List<TelemetryMeasurement> Read();
+    Task Write(ClimateMeasurement measurement);
+    List<ClimateMeasurement> GetMeasurements(string? location, DateTime? from, int? measurementType);
+    List<string> GetLocations();
 }
