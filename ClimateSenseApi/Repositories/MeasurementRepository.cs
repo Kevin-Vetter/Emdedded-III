@@ -1,7 +1,7 @@
 using ClimateSenseApi.Contexts;
-using ClimateSenseApi.Models;
-using ClimateSenseApi.Services;
+using ClimateSenseModels;
 using Microsoft.EntityFrameworkCore;
+using Measurement = ClimateSenseApi.Entities.Measurement;
 
 namespace ClimateSenseApi.Repositories;
 
@@ -13,7 +13,7 @@ public class MeasurementRepository(MeasurementContext context) : IMeasurementRep
         await context.SaveChangesAsync();
     }
 
-    public async Task<List<Measurement>> GetMeasurements(string? location, DateTime? from, int? measurementType)
+    public async Task<List<Measurement>> GetMeasurements(string? location, DateTime? from, MeasurementType? measurementType)
     {
         IQueryable<Measurement> query = context.Measurements.AsQueryable();
 

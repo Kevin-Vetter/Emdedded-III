@@ -1,9 +1,8 @@
-using System.ComponentModel;
 using System.Text;
 using System.Text.Json;
-using ClimateSenseApi.Models;
+using ClimateSenseApi.Entities;
 using ClimateSenseApi.Repositories;
-using ClimateSenseApi.Services;
+using ClimateSenseServices;
 using MQTTnet.Client;
 
 namespace ClimateSenseApi.BackgroundServices;
@@ -13,7 +12,7 @@ public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         await mqttService.Connect();
-        await mqttService.Subscribe("measurement/+", OnMessageReceived);
+        await mqttService.Subscribe("location/+/measurement/+", OnMessageReceived);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

@@ -1,5 +1,7 @@
 
-namespace ClimateSenseApi.Models;
+using ClimateSenseModels;
+
+namespace ClimateSenseApi.Entities;
 
 public class Measurement
 {
@@ -9,7 +11,7 @@ public class Measurement
 
     public string Device { get; set; } = "";
 
-    public int MeasurementType { get; set; }
+    public MeasurementType MeasurementType { get; set; }
 
     public string Location { get; set; } = "";
 

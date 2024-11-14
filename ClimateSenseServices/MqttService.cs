@@ -1,17 +1,13 @@
 using System.Text;
 using System.Text.Json;
-using ClimateSenseApi.Models;
-using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 
-namespace ClimateSenseApi.Services;
+namespace ClimateSenseServices;
 
-public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttClientOptionsBuilder builder, IOptions<AppSettings> options) : IMqttService
+public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttClientOptionsBuilder builder) : IMqttService
 {
-    private readonly IOptions<AppSettings> _options = options;
-
     public bool ClientIsConnected => mqttClient.IsConnected;
 
     public async Task<MqttClientConnectResult> Connect(MqttClientOptionsBuilder? optionsBuilder = null, CancellationToken? cancellationToken = null)

@@ -1,7 +1,7 @@
-using ClimateSenseApi.Models;
 using ClimateSenseApi.Repositories;
-using ClimateSenseApi.Services;
+using ClimateSenseModels;
 using Microsoft.AspNetCore.Mvc;
+using Measurement = ClimateSenseApi.Entities.Measurement;
 
 namespace ClimateSenseApi.Controllers;
 
@@ -16,7 +16,7 @@ public class MeasurementController(IMeasurementRepository measurementRepository)
     }
 
     [HttpGet("")]
-    public async Task<List<Measurement>> GetMeasurements(string? location, DateTime? from, int? measurementType)
+    public async Task<List<Measurement>> GetMeasurements(string? location, DateTime? from, MeasurementType? measurementType)
     {
         return await measurementRepository.GetMeasurements(location, from, measurementType);
     }

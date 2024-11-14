@@ -1,4 +1,4 @@
-using ClimateSenseApi.Models;
+using ClimateSenseApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClimateSenseApi.Contexts;
