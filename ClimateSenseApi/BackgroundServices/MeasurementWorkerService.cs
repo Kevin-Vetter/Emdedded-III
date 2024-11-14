@@ -2,12 +2,13 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.Json;
 using ClimateSenseApi.Models;
+using ClimateSenseApi.Repositories;
 using ClimateSenseApi.Services;
 using MQTTnet.Client;
 
 namespace ClimateSenseApi.BackgroundServices;
 
-public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, IMqttService mqttService, IInfluxDbService influxDbService) : BackgroundService
+public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, IMqttService mqttService, IServiceScopeFactory scopeFactory) : BackgroundService
 {
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -25,10 +26,15 @@ public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, 
 
     private async Task OnMessageReceived(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
-        ClimateMeasurement? telemetry = JsonSerializer.Deserialize<ClimateMeasurement>(Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment));
+        Measurement? telemetry = JsonSerializer.Deserialize<Measurement>(Encoding.Default.GetString(eventArgs.ApplicationMessage.PayloadSegment));
 
         if (telemetry != null)
-            await influxDbService.Write(telemetry);
+        {
+            AsyncServiceScope scope = scopeFactory.CreateAsyncScope();
+            IMeasurementRepository measurementRepository = scope.ServiceProvider.GetRequiredService<IMeasurementRepository>();
+
+            await measurementRepository.AddMeasurement(telemetry);
+        }
 
     }
 }
