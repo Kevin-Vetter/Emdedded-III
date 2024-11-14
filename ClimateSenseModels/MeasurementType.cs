@@ -1,4 +1,4 @@
-﻿namespace ClimateSenseModels
+namespace ClimateSenseModels
 {
     public enum MeasurementType
     {

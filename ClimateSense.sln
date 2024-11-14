@@ -5,11 +5,11 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClimateSenseApi", "ClimateSenseApi\ClimateSenseApi.csproj", "{D9C41028-5C58-4480-B5A7-051B9C42C64C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseMAUI", "ClimateSenseMAUI\ClimateSenseMAUI.csproj", "{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseModels", "ClimateSenseModels\ClimateSenseModels.csproj", "{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseModels", "ClimateSenseModels\ClimateSenseModels.csproj", "{27751625-E60B-4826-9C32-2E341E245E8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseService", "ClimateSenseService\ClimateSenseService.csproj", "{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseServices", "ClimateSenseServices\ClimateSenseServices.csproj", "{1305BEA2-0CB4-4D0C-8226-65CB0FE06F70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseMAUI", "ClimateSenseMAUI\ClimateSenseMAUI.csproj", "{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,20 +21,18 @@ Global
 		{D9C41028-5C58-4480-B5A7-051B9C42C64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9C41028-5C58-4480-B5A7-051B9C42C64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9C41028-5C58-4480-B5A7-051B9C42C64C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E7FBE39-2BE1-4E81-8CE5-DD974F287C0E}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{27751625-E60B-4826-9C32-2E341E245E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27751625-E60B-4826-9C32-2E341E245E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27751625-E60B-4826-9C32-2E341E245E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27751625-E60B-4826-9C32-2E341E245E8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1305BEA2-0CB4-4D0C-8226-65CB0FE06F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1305BEA2-0CB4-4D0C-8226-65CB0FE06F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1305BEA2-0CB4-4D0C-8226-65CB0FE06F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1305BEA2-0CB4-4D0C-8226-65CB0FE06F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

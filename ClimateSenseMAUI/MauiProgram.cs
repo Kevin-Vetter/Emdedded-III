@@ -1,12 +1,14 @@
 ﻿using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
 using ClimateSenseServices;
+using ClimateSenseService;
 using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace ClimateSenseMAUI
 {
@@ -19,6 +21,7 @@ namespace ClimateSenseMAUI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .ConfigureSyncfusionCore()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -62,8 +65,13 @@ namespace ClimateSenseMAUI
             builder.Services.AddTransient<LoginViewModel>();
 
 #if DEBUG
-            builder.Logging.AddDebug();
+    		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
+            
+            builder.Services.AddTransient<RoomDetailPage>(); 
+            builder.Services.AddTransient<RoomDetailViewModel>();
 
             return builder.Build();
         }
