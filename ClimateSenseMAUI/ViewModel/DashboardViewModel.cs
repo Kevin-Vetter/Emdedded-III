@@ -75,9 +75,12 @@ namespace ClimateSenseMAUI.ViewModel
         [RelayCommand]
         async Task GoToRoomDetails(DashboardRooms item)
         {
+            // Package package=  new Package() { packageId = lbl.Text, packageName = "Pack" };  
+            
+            // await Shell.Current.GoToAsync(nameof(RoomDetailPage)+$"?item={item}");
             await Shell.Current.GoToAsync(nameof(RoomDetailPage),new Dictionary<string, object>
             {
-                {"item",item.RoomName}
+                {"item",item}
             });
         }
         [RelayCommand]

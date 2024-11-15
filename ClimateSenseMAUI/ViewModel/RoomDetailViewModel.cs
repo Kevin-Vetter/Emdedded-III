@@ -6,13 +6,13 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ClimateSenseMAUI.ViewModel;
 
-[QueryProperty(nameof(_roomName), "item")]
+[QueryProperty(nameof(DashboardRooms), "item")]
 public partial class RoomDetailViewModel : BaseViewModel
 {
 
     // dependency injection
     private readonly IApiService _apiService;
-    [ObservableProperty] private string _roomName;
+    [ObservableProperty] public DashboardRooms _roomName;
     private DashboardClimateInput _dashboardClimateInput { get; set; }
     public RoomDetailViewModel(IApiService service)
     {
@@ -20,7 +20,7 @@ public partial class RoomDetailViewModel : BaseViewModel
         _dashboardClimateInput = new DashboardClimateInput
         {
             From = DateTime.UtcNow.AddHours(-1),
-            Roomname = _roomName,
+            Roomname = _roomName.RoomName,
             Type = MeasurementType.Temperature
         };
       GetRoom(_dashboardClimateInput);
