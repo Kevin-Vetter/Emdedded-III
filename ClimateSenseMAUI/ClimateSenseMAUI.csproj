@@ -44,12 +44,6 @@
 		<AndroidTlsProvider>btls</AndroidTlsProvider>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
-<!--		<AndroidTlsProvider></AndroidTlsProvider>-->
-		<AndroidTlsProvider>legacy</AndroidTlsProvider>
-		<AndroidTlsProvider>btls</AndroidTlsProvider>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#cae9f3" />
@@ -101,7 +95,6 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-<<<<<<< HEAD
 	<ItemGroup>
 	  <None Update="Platforms\Android\Resources\xml\network_security_config.xml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -109,19 +102,19 @@
 	</ItemGroup>
 
 	 
-=======
 
 	<ItemGroup>
 	  <Folder Include="Model\" />
 	</ItemGroup>
 
 
->>>>>>> refs/heads/staging
+	<ItemGroup>
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.1.58" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="27.1.58" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.1.58" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="27.1.58" />
+	</ItemGroup>
 	
 
 	<ItemGroup>
