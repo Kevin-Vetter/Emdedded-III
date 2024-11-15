@@ -19,11 +19,12 @@
     <CollectionView ItemsSource="{Binding RoomList}" SelectionMode="None">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="models:DashboardRooms">
-                <Frame HeightRequest="60">
+                <Frame>
                     <Frame.GestureRecognizers>
 
                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=GoToRoomDetailsCommand}" CommandParameter="{Binding .}" />
                     </Frame.GestureRecognizers>
+                    <Grid RowDefinitions="*,*">
                     <Grid ColumnDefinitions="50,*" HeightRequest="50">
                         <BoxView
                             CornerRadius="10"
@@ -33,12 +34,25 @@
                             WidthRequest="20"
                             Color="Black" />
                         <Label
-                            Grid.Column="1"
+                            Grid.Row="0"
                             FontSize="16"
                             LineBreakMode="NoWrap"
                             Text="{Binding RoomName}"
                             TextColor="Black"
                             VerticalTextAlignment="Center" />
+
+                        <CollectionView Grid.Row="1" ItemsSource="{Binding CurrentMeasurements}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Measurement">
+                                    <StackLayout>
+                                        <Label Text="Type: " />
+                                        <Label Text="{Binding MeasurementType}" />
+                                        <Label Text="Værdi: " />
+                                        <Label Text="{Binding Value}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </Grid>
                 </Frame>
             </DataTemplate>

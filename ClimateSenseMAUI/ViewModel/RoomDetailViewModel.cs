@@ -15,7 +15,7 @@ public partial class RoomDetailViewModel : BaseViewModel
     [ObservableProperty] private DashboardClimateInput _input;
     public RoomDetailViewModel(IApiService service)
     {
-        this._apiService = service;
+        _apiService = service;
         GetRoom(_input);
     }
     public ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();

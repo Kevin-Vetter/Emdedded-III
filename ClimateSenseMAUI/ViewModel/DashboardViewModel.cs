@@ -45,9 +45,29 @@ namespace ClimateSenseMAUI.ViewModel
             RoomList.Clear();
             foreach (var item in rooms)
             {
-                RoomList.Add(item);
+                MeasurementType[] measurementTypes = Enum.GetValues<MeasurementType>();
+
+                DashboardRooms room = new DashboardRooms()
+                {
+                    RoomName = item,
+                    CurrentMeasurements = new()
+                };
+
+                for (int i = 0; i < measurementTypes.Length; i++)
+                {
+                    Measurement measurement = new Measurement();
+                    room.CurrentMeasurements.Add(measurement);
+
+                    WeakReferenceMessenger.Default.Register<Measurement, string>(measurement,$"{item}/{measurementTypes[i]}", (recipient, message) =>
+                    {
+                        recipient = message;
+                    });
+                }
+
+                RoomList.Add(room);
             }
         }
+
         [RelayCommand]
         async Task GoToRoomDetails(DashboardRooms item)
         {
