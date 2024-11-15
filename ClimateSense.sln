@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClimateSenseApi", "ClimateS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseModels", "ClimateSenseModels\ClimateSenseModels.csproj", "{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseService", "ClimateSenseService\ClimateSenseService.csproj", "{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseMAUI", "ClimateSenseMAUI\ClimateSenseMAUI.csproj", "{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateSenseServices", "ClimateSenseServices\ClimateSenseServices.csproj", "{4195A00C-0AF7-440F-AEEC-DCA89710623C}"
@@ -27,10 +25,6 @@ Global
 		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECB0CCC-25CA-47D7-81E1-1CE86ADC54DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23CC98C4-816E-4AD5-BCDB-3A8A0B492B9F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62FB21C3-8BDE-41A9-8E77-7DC64297FE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
