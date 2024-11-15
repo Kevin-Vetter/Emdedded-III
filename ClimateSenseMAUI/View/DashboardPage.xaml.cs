@@ -9,9 +9,18 @@ namespace ClimateSenseMAUI.View;
 
 public partial class DashboardPage : ContentPage
 {
+    private DashboardViewModel _vm;
     public DashboardPage(DashboardViewModel vm)
     {
         InitializeComponent();
+        this._vm = vm;
         BindingContext = vm;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _vm.GetRoomsCommand.Execute(null);
+        
     }
 }

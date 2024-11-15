@@ -56,6 +56,7 @@ namespace ClimateSenseMAUI
                 return mqttClient;
             });
             builder.Services.AddSingleton<IMqttService, MqttService>();
+            builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddSingleton<NotificationViewModel>();
 
             builder.Services.AddSingleton<DashboardPage>();
@@ -66,7 +67,6 @@ namespace ClimateSenseMAUI
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<IApiService, ApiService>();
             
             builder.Services.AddTransient<RoomDetailPage>(); 
             builder.Services.AddTransient<RoomDetailViewModel>();

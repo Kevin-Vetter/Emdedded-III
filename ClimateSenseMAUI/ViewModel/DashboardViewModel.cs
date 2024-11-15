@@ -18,12 +18,13 @@ namespace ClimateSenseMAUI.ViewModel
         public DashboardViewModel(IApiService service)
         {
             this._apiService = service;
+         
             
         }
         public ObservableCollection<DashboardRooms> RoomList { get; } = new();
         
         [RelayCommand]
-        private async Task GetRooms()
+        async Task GetRooms()
         {
             var rooms = await _apiService.GetLocations();
             RoomList.Clear();

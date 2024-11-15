@@ -50,7 +50,7 @@ public class ApiService : IApiService
         try
         {
             HttpResponseMessage response = null;
-            UriBuilder builder = new(Constants.BaseUrl) { Path = "/Locations" };
+            UriBuilder builder = new(Constants.BaseUrl) { Path = $"{Constants.Endpoint}/locations" };
             response = await _client.GetAsync(builder.Uri);
             if (response.IsSuccessStatusCode)
             {
