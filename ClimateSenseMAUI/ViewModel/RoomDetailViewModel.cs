@@ -9,15 +9,15 @@ namespace ClimateSenseMAUI.ViewModel;
 [QueryProperty(nameof(DashboardClimateInput), "item")]
 public partial class RoomDetailViewModel : BaseViewModel
 {
+    // Find out how telemetry data model looks like.  Then work it out from there, becasue atm i have no clue :D
+    [ObservableProperty] private DashboardClimateInput _input;
 
     private readonly IApiService _apiService;
-    [ObservableProperty] private DashboardClimateInput _input;
     public RoomDetailViewModel(IApiService service)
     {
         this._apiService = service;
         GetRoom(_input);
     }
-    // Find out how telemetry data model looks like.  Then work it out from there, becasue atm i have no clue :D
     public ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();
 
 

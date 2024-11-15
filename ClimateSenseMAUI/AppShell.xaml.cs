@@ -26,26 +26,26 @@ namespace ClimateSenseMAUI
 
         protected override async void OnAppearing()
         {
-            await _mqttService.Connect();
-            await _mqttService.Subscribe("location/+/measurement/+", MessageReceivedHandler);
+            //await _mqttService.Connect();
+           // await _mqttService.Subscribe("location/+/measurement/+", MessageReceivedHandler);
         }
 
-        private Task MessageReceivedHandler(MqttApplicationMessageReceivedEventArgs args)
-        {
-            Measurement? measurement = JsonSerializer.Deserialize<Measurement>(args.ApplicationMessage.PayloadSegment);
-            if (measurement == null) return Task.CompletedTask;
+        //private Task MessageReceivedHandler(MqttApplicationMessageReceivedEventArgs args)
+        //{
+        //    Measurement? measurement = JsonSerializer.Deserialize<Measurement>(args.ApplicationMessage.PayloadSegment);
+        //    if (measurement == null) return Task.CompletedTask;
 
-            WeakReferenceMessenger.Default.Send(measurement, $"{measurement.Location}/{measurement.MeasurementType}");
+        //    WeakReferenceMessenger.Default.Send(measurement, $"{measurement.Location}/{measurement.MeasurementType}");
 
-            if (measurement.Value > 30)
-            {
-                WeakReferenceMessenger.Default.Send(new Notification()
-                {
-                    Message = $"Warning: {Enum.GetName(measurement.MeasurementType)} has reached {measurement.Value}{DenominationDictionary.Denominations[measurement.MeasurementType]}"
-                });
-            }
+        //    if (measurement.Value > 30)
+        //    {
+        //        WeakReferenceMessenger.Default.Send(new Notification()
+        //        {
+        //            Message = $"Warning: {Enum.GetName(measurement.MeasurementType)} has reached {measurement.Value}{DenominationDictionary.Denominations[measurement.MeasurementType]}"
+        //        });
+        //    }
 
-            return Task.CompletedTask;
-        }
+        //    return Task.CompletedTask;
+        //}
     }
 }
