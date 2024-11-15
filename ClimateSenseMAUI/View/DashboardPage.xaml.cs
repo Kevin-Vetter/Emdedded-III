@@ -22,4 +22,9 @@ public partial class DashboardPage : ContentPage
         await _vm.CheckLoggedInAsync();
         _vm.GetRoomsCommand.Execute(null);
     }
+
+    protected override void OnDisappearing()
+    {
+        _vm.UnregisterMessengers();
+    }
 }
