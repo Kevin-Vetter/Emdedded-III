@@ -8,6 +8,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace ClimateSenseMAUI
 {
@@ -20,6 +21,7 @@ namespace ClimateSenseMAUI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .ConfigureSyncfusionCore()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -60,17 +62,28 @@ namespace ClimateSenseMAUI
                 IMqttClient mqttClient = mqttFactory.CreateMqttClient();
                 return mqttClient;
             });
+            
             builder.Services.AddSingleton<IMqttService, MqttService>();
+            builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
+
+
+            builder.Services.AddSingleton<NotificationPage>();
             builder.Services.AddSingleton<NotificationViewModel>();
 
             builder.Services.AddSingleton<DashboardPage>();
             builder.Services.AddSingleton<DashboardViewModel>();
+
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LoginViewModel>();
 
+            builder.Services.AddTransient<RoomDetailPage>(); 
+            builder.Services.AddTransient<RoomDetailViewModel>();
+
 #if DEBUG
-            builder.Logging.AddDebug();
+    		builder.Logging.AddDebug();
 #endif
+            
 
             return builder.Build();
         }

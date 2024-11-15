@@ -11,7 +11,7 @@
 
     <Shell.TitleView>
         <StackLayout>
-            <Button HorizontalOptions="End" BackgroundColor="Gray" Height="50" Width="50" Command="{Binding OpenNotificationPageCommand}" Text="{Binding Notifications.Count}" />
+            <Button HorizontalOptions="Start" CornerRadius="50" BorderColor="#cae9f3" BorderWidth="2" TextColor="Black" Margin="2" BackgroundColor="White" HeightRequest="40" WidthRequest="40" Command="{Binding OpenNotificationPageCommand}" Text="{Binding Notifications.Count}" />
         </StackLayout>
     </Shell.TitleView>
 
@@ -24,5 +24,9 @@
         Title="Dashboard"
         ContentTemplate="{DataTemplate local:DashboardPage}"
         Route="DashboardPage"/>
+    <ShellContent
+        Title="Notifications"
+        ContentTemplate="{DataTemplate local:NotificationPage}"
+        Route="NotificationPage"/>
 
 </Shell>
