@@ -55,22 +55,28 @@ namespace ClimateSenseMAUI
                 IMqttClient mqttClient = mqttFactory.CreateMqttClient();
                 return mqttClient;
             });
+            
             builder.Services.AddSingleton<IMqttService, MqttService>();
+            builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
+
+
+            builder.Services.AddSingleton<NotificationPage>();
             builder.Services.AddSingleton<NotificationViewModel>();
 
             builder.Services.AddSingleton<DashboardPage>();
             builder.Services.AddSingleton<DashboardViewModel>();
+
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LoginViewModel>();
+
+            builder.Services.AddTransient<RoomDetailPage>(); 
+            builder.Services.AddTransient<RoomDetailViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<IApiService, ApiService>();
-            builder.Services.AddSingleton<IRoomService, RoomService>();
             
-            builder.Services.AddTransient<RoomDetailPage>(); 
-            builder.Services.AddTransient<RoomDetailViewModel>();
 
             return builder.Build();
         }
