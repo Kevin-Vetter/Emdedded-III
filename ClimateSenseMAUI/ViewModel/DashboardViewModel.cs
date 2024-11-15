@@ -55,12 +55,16 @@ namespace ClimateSenseMAUI.ViewModel
 
                 for (int i = 0; i < measurementTypes.Length; i++)
                 {
-                    Measurement measurement = new Measurement();
+                    ObservableMeasurement measurement = new ObservableMeasurement();
                     room.CurrentMeasurements.Add(measurement);
 
-                    WeakReferenceMessenger.Default.Register<Measurement, string>(measurement,$"{item}/{measurementTypes[i]}", (recipient, message) =>
+                    WeakReferenceMessenger.Default.Register<Measurement, string>(this,$"{item}/{measurementTypes[i]}", (recipient, message) =>
                     {
-                        recipient = message;
+                        measurement.MeasurementType = message.MeasurementType;
+                        measurement.Timestamp = message.Timestamp;
+                        measurement.Location = message.Location;
+                        measurement.Value = message.Value;
+                        measurement.Device = message.Device;
                     });
                 }
 
