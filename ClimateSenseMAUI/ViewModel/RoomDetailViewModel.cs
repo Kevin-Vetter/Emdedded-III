@@ -6,28 +6,30 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ClimateSenseMAUI.ViewModel;
 
-[QueryProperty(nameof(DashboardClimateInput), "item")]
+[QueryProperty(nameof(DashboardRooms), "item")]
 public partial class RoomDetailViewModel : BaseViewModel
 {
-    // Find out how telemetry data model looks like.  Then work it out from there, becasue atm i have no clue :D
 
+    // dependency injection
     private readonly IApiService _apiService;
-    [ObservableProperty] private DashboardClimateInput _input;
+    [ObservableProperty] private string _roomName;
+    private DashboardClimateInput _dashboardClimateInput { get; set; }
     public RoomDetailViewModel(IApiService service)
     {
         _apiService = service;
-        GetRoom(_input);
+        _dashboardClimateInput = new DashboardClimateInput
+        {
+            From = DateTime.UtcNow.AddHours(-1),
+            Roomname = _roomName,
+            Type = MeasurementType.Temperature
+        };
+      GetRoom(_dashboardClimateInput);
     }
     public ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();
-
 
     [RelayCommand]
    private async Task GetRoom(DashboardClimateInput input)
     {
-        if (input.From == null)
-        {
-            input.From = DateTime.Now.AddHours(-1);
-        }
         var messurement = await _apiService.GetRoomMessurent(input.Roomname, input.From, input.Type);
         Measurementlist.Clear();
         foreach (var item in messurement)

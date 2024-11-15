@@ -42,7 +42,8 @@ namespace ClimateSenseMAUI
                 return new MqttClientOptionsBuilder()
                     .WithTcpServer(Appsettings.MqttBroker["Host"])
                     .WithCredentials(Appsettings.MqttBroker["Username"], Appsettings.MqttBroker["Password"])
-                    .WithTlsOptions(x => {
+                    .WithTlsOptions(x =>
+                    {
                         x.UseTls();
                         x.WithSslProtocols(SslProtocols.Tls12);
                         x.WithIgnoreCertificateChainErrors();
@@ -76,8 +77,8 @@ namespace ClimateSenseMAUI
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-            
-            builder.Services.AddTransient<RoomDetailPage>(); 
+
+            builder.Services.AddTransient<RoomDetailPage>();
             builder.Services.AddTransient<RoomDetailViewModel>();
 
             return builder.Build();
