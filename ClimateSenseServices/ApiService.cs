@@ -73,7 +73,7 @@ public class ApiService : IApiService
         try
         {
             HttpResponseMessage response = null;
-            UriBuilder builder = new(Constants.BaseUrl) { Path = $"{"?location="+room+"&from="+from+"&type="+type}" };
+            UriBuilder builder = new(Constants.BaseUrl) { Path = $"{"?location="+room+"&from="+from+"&type="+(int)type}" };
             response = await _client.GetAsync(builder.Uri);
             if (response.IsSuccessStatusCode)
             {

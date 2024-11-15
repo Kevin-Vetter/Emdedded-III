@@ -48,7 +48,7 @@ public partial class RoomDetailViewModel : BaseViewModel
         private async Task GetRoomDay()
         {
           
-            var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddDays(-24), MeasurementType.Humidity);
+            var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddHours(-24), MeasurementType.Humidity);
             Measurementlist.Clear();
             foreach (var item in messurement)
             {
