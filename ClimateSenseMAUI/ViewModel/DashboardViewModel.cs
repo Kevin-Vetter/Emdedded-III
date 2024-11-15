@@ -41,25 +41,40 @@ namespace ClimateSenseMAUI.ViewModel
         [RelayCommand]
         async Task GetRooms()
         {
-            IsRefreshing = true;
-            var rooms = await _apiService.GetLocations();
-            RoomList.Clear();
-            foreach (var item in rooms)
+            if (IsBusy)
             {
-                MeasurementType[] measurementTypes = Enum.GetValues<MeasurementType>();
-
-                DashboardRooms room = new DashboardRooms()
-                {
-                    RoomName = item,
-                    CurrentMeasurements = new()
-                };
-
-                RegisterMessengers(measurementTypes, room, item);
-
-                RoomList.Add(room);
+                return;
             }
 
-            IsRefreshing = false;
+            try
+            {
+                IsRefreshing = true;
+                var rooms = await _apiService.GetLocations();
+                RoomList.Clear();
+                foreach (var item in rooms)
+                {
+                    MeasurementType[] measurementTypes = Enum.GetValues<MeasurementType>();
+
+                    DashboardRooms room = new DashboardRooms()
+                    {
+                        RoomName = item,
+                        CurrentMeasurements = new()
+                    };
+
+                    RegisterMessengers(measurementTypes, room, item);
+
+                    RoomList.Add(room);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                IsBusy = false;
+                IsRefreshing = false;
+            }
         }
 
         private void RegisterMessengers(MeasurementType[] measurementTypes, DashboardRooms room, string item)
