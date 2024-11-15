@@ -29,6 +29,8 @@
                                   YBindingPath="Value" 
                                   StrokeDashArray="{StaticResource dashArray}"/>
         </chart:SfCartesianChart>
-        <Button Text="Save" Command="{Binding }" />
+        <Button Text="Seneste Time" Command="{Binding GetRoomCommand}" CommandParameter="{Binding }" />
+        <Button Text="Dag" Command="{Binding GetRoomCommand}" CommandParameter="{Binding }" />
+        <Button Text="Uge" Command="{Binding GetRoomCommand}" CommandParameter="{Binding }" />
     </StackLayout>
 </ContentPage>

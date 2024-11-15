@@ -1,7 +1,6 @@
 ﻿using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
 using ClimateSenseServices;
-using ClimateSenseService;
 using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
 using MQTTnet;
@@ -68,7 +67,6 @@ namespace ClimateSenseMAUI
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<IApiService, ApiService>();
-            builder.Services.AddSingleton<IRoomService, RoomService>();
             
             builder.Services.AddTransient<RoomDetailPage>(); 
             builder.Services.AddTransient<RoomDetailViewModel>();

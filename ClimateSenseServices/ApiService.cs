@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using ClimateSenseModels;
 
-namespace ClimateSenseService;
+namespace ClimateSenseServices;
 
 public class ApiService : IApiService
 {
