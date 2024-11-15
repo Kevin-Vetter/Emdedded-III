@@ -17,9 +17,4 @@ public partial class DashboardPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
-
-    protected override async void OnAppearing()
-    {
-        await _viewModel.StartSubscribingToMqtt();
-    }
 }

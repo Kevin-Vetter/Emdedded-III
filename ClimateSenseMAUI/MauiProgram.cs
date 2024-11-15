@@ -45,9 +45,7 @@ namespace ClimateSenseMAUI
                     .WithTlsOptions(x => {
                         x.UseTls();
                         x.WithSslProtocols(SslProtocols.Tls12);
-                        x.WithAllowUntrustedCertificates();
                         x.WithIgnoreCertificateChainErrors();
-                        //x.WithIgnoreCertificateRevocationErrors();
                     })
                     .WithProtocolVersion(MqttProtocolVersion.V311)
                     .WithWillTopic("health")
@@ -66,7 +64,6 @@ namespace ClimateSenseMAUI
             builder.Services.AddSingleton<IMqttService, MqttService>();
             builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddSingleton<IRoomService, RoomService>();
-
 
             builder.Services.AddSingleton<NotificationPage>();
             builder.Services.AddSingleton<NotificationViewModel>();
