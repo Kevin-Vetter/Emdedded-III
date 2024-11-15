@@ -17,7 +17,7 @@ public partial class RoomDetailViewModel : BaseViewModel
     public RoomDetailViewModel(IApiService service)
     {
         _apiService = service;
-      GetRoom();
+      // GetRoom();
     }
     public ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();
 
