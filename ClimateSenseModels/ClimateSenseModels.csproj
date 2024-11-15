@@ -4,4 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
+    </ItemGroup>
 </Project>

@@ -102,12 +102,6 @@
 	  </None>
 	</ItemGroup>
 
-	 
-
-	<ItemGroup>
-	  <Folder Include="Model\" />
-	</ItemGroup>
-
 
 	<ItemGroup>
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.1.58" />
@@ -126,7 +120,7 @@
 
 
 	<ItemGroup>
-	  <Folder Include="Model\" />
+	  <Folder Include="ObservableModels\" />
 	</ItemGroup>
 
 </Project>
