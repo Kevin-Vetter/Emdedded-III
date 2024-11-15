@@ -68,7 +68,6 @@ public class ApiService : IApiService
 
     public async Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type)
     {
-        Items.Clear();
         Items = new List<ClimateMeasurement>();
         try
         {

@@ -23,8 +23,8 @@ public partial class RoomDetailViewModel : BaseViewModel
 
     [RelayCommand]
    private async Task GetRoom()
-    {
-        var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddHours(-1), MeasurementType.Humidity);
+   {
+       var messurement = await _apiService.RefreshDataAsync();
         Measurementlist.Clear();
         foreach (var item in messurement)
         {
