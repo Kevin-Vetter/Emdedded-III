@@ -12,7 +12,7 @@
     </Shell.BackButtonBehavior>
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Command="{Binding OpenSettingsCommand}" IconImageSource="gear.png" />-->
-        <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png" />
+        <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png"/>
     </ContentPage.ToolbarItems>
 
     <CollectionView ItemsSource="{Binding RoomList}" SelectionMode="None">

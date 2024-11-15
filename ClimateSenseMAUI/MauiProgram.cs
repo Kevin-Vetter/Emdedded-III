@@ -57,6 +57,11 @@ namespace ClimateSenseMAUI
             });
             builder.Services.AddSingleton<IMqttService, MqttService>();
             builder.Services.AddSingleton<IApiService, ApiService>();
+            builder.Services.AddSingleton<IRoomService, RoomService>();
+
+
+            builder.Services.AddSingleton<NotificationPage>();
+            builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddSingleton<NotificationViewModel>();
 
             builder.Services.AddSingleton<DashboardPage>();

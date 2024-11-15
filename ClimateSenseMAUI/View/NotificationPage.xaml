@@ -7,12 +7,14 @@
              xmlns:converters="clr-namespace:ClimateSenseMAUI.Converters"
              xmlns:models="clr-namespace:ClimateSenseModels;assembly=ClimateSenseModels"
              x:DataType="vm:NotificationViewModel">
+
     <ContentPage.Resources>
         <converters:DatetimeUnitsFromConverter x:Key="DatetimeUnitsFromConverter" />
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <Button Text="X" FontAttributes="Bold" FontSize="30" HorizontalOptions="Start" TextColor="Black"  Background="White" HeightRequest="50" WidthRequest="50" Command="{Binding CloseNotificationPageCommand}" />
                 <CollectionView ItemsSource="{Binding Notifications}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Notification">
