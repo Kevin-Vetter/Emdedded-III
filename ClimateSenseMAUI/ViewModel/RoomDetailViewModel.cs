@@ -17,20 +17,14 @@ public partial class RoomDetailViewModel : BaseViewModel
     public RoomDetailViewModel(IApiService service)
     {
         _apiService = service;
-        _dashboardClimateInput = new DashboardClimateInput
-        {
-            From = DateTime.UtcNow.AddHours(-1),
-            Roomname = _roomName.RoomName,
-            Type = MeasurementType.Temperature
-        };
-      GetRoom(_dashboardClimateInput);
+      GetRoom();
     }
     public ObservableCollection<ClimateMeasurement> Measurementlist { get; } = new();
 
     [RelayCommand]
-   private async Task GetRoom(DashboardClimateInput input)
+   private async Task GetRoom()
     {
-        var messurement = await _apiService.GetRoomMessurent(input.Roomname, input.From, input.Type);
+        var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddHours(-1), MeasurementType.Humidity);
         Measurementlist.Clear();
         foreach (var item in messurement)
         {
@@ -38,6 +32,31 @@ public partial class RoomDetailViewModel : BaseViewModel
         }
 
     }
+    [RelayCommand]
+      private async Task GetRoomWeek()
+        {
+            var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddDays(-7), MeasurementType.Humidity);
+            Measurementlist.Clear();
+            foreach (var item in messurement)
+            {
+                Measurementlist.Add(item);
+            }
+    
+        }
+      
+    [RelayCommand]
+        private async Task GetRoomDay()
+        {
+          
+            var messurement = await _apiService.GetRoomMessurent(_roomName.RoomName, DateTime.UtcNow.AddDays(-24), MeasurementType.Humidity);
+            Measurementlist.Clear();
+            foreach (var item in messurement)
+            {
+                Measurementlist.Add(item);
+            }
+
+        }
+
     
     
 }
