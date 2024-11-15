@@ -10,7 +10,7 @@ public class ApiService : IApiService
     HttpClient _client;
     JsonSerializerOptions _serializerOptions;
     public List<ClimateMeasurement> Items { get; private set; }
-    public List<string> Locations { get; private set; }
+    public List<DashboardRooms> Locations { get; private set; }
 
     public ApiService()
     {
@@ -44,8 +44,9 @@ public class ApiService : IApiService
         return Items;
     }
 
-    public async Task GetLocations()
+    public async Task<List<DashboardRooms>> GetLocations()
     {
+        Locations = new List<DashboardRooms>();
         try
         {
             HttpResponseMessage response = null;
@@ -54,13 +55,15 @@ public class ApiService : IApiService
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                Locations = JsonSerializer.Deserialize<List<string>>(content, _serializerOptions);
+                Locations = JsonSerializer.Deserialize<List<DashboardRooms>>(content, _serializerOptions);
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
+
+        return Locations;
     }
 
     public async Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type)
