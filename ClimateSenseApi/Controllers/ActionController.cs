@@ -1,5 +1,5 @@
 using System.Text;
-using ClimateSenseApi.Services;
+using ClimateSenseServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MQTTnet;

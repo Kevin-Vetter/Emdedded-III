@@ -7,12 +7,13 @@
     Title=""
     x:DataType="vm:LoginViewModel"
     BackgroundColor="White">
-    <!--<ContentPage.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Padding" Value="25,0,25,0" />
-        </Style>
-    </ContentPage.Resources>-->
-    <Grid RowDefinitions="auto , *">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+    <Shell.TitleView>
+        <Button IsEnabled="False" IsVisible="False" />
+    </Shell.TitleView>
+    <Grid BackgroundColor="White" RowDefinitions="auto , *">
         <VerticalStackLayout Grid.Row="0">
             <Label
                 FontAttributes="Bold"
@@ -38,6 +39,7 @@
             FontSize="35"
             HeightRequest="75"
             Text=" LOGIN"
+            TextColor="Black"
             VerticalOptions="Center" />
     </Grid>
 </ContentPage>

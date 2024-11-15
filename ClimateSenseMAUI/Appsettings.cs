@@ -16,5 +16,12 @@ namespace ClimateSenseMAUI
             { "PostLogoutRedirectUri", "myapp://callback/" },
             { "Scope", "openid profile email" },
         };
+
+        public static Dictionary<string, string> MqttBroker = new()
+        {
+            {"Host", "6d50cc68ea9d4e079719910a30d98aee.s1.eu.hivemq.cloud"},
+            {"Username", "dotnet"},
+            {"Password", "haSGlWNJemJOVTpR"},
+        };
     }
 }
