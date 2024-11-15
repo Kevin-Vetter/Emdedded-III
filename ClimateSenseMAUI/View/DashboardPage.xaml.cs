@@ -13,7 +13,7 @@ public partial class DashboardPage : ContentPage
     public DashboardPage(DashboardViewModel vm)
     {
         InitializeComponent();
-        this._vm = vm;
+        _vm = vm;
         BindingContext = vm;
     }
 

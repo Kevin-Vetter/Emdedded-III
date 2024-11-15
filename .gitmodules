@@ -1,3 +1,4 @@
 [submodule "ClimateSenseArduino"]
 	path = ClimateSenseArduino
 	url = https://github.com/1micr01/ClimateSenseArduino.git
+	branch = master

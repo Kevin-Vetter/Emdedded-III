@@ -6,23 +6,26 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ClimateSenseModels;
 using ClimateSenseServices;
+using CommunityToolkit.Mvvm.Messaging;
+using MQTTnet.Client;
 
 namespace ClimateSenseMAUI.ViewModel
 {
-    public partial class DashboardViewModel : BaseViewModel
+    public partial class DashboardViewModel(IMqttService mqttService) : BaseViewModel
     {
         private readonly IApiService _apiService;
         public DashboardViewModel(IApiService service)
         {
-            this._apiService = service;
-         
-            
+            _apiService = service;
+
+
         }
         public ObservableCollection<DashboardRooms> RoomList { get; } = new();
-        
+
         [RelayCommand]
         async Task GetRooms()
         {
@@ -44,7 +47,7 @@ namespace ClimateSenseMAUI.ViewModel
             {
                 {"item",item}
             });
-        } 
+        }
         [RelayCommand]
         public async Task LogOut()
         {

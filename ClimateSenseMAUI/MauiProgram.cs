@@ -1,4 +1,5 @@
-﻿using ClimateSenseMAUI.View;
+﻿using System.Security.Authentication;
+using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
 using ClimateSenseServices;
 using Microsoft.Extensions.Logging;
@@ -41,7 +42,11 @@ namespace ClimateSenseMAUI
                 return new MqttClientOptionsBuilder()
                     .WithTcpServer(Appsettings.MqttBroker["Host"])
                     .WithCredentials(Appsettings.MqttBroker["Username"], Appsettings.MqttBroker["Password"])
-                    .WithTlsOptions(x => x.UseTls())
+                    .WithTlsOptions(x => {
+                        x.UseTls();
+                        x.WithSslProtocols(SslProtocols.Tls12);
+                        x.WithIgnoreCertificateChainErrors();
+                    })
                     .WithProtocolVersion(MqttProtocolVersion.V311)
                     .WithWillTopic("health")
                     .WithWillPayload("dead")
@@ -58,7 +63,6 @@ namespace ClimateSenseMAUI
             builder.Services.AddSingleton<IMqttService, MqttService>();
             builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddSingleton<IRoomService, RoomService>();
-
 
             builder.Services.AddSingleton<NotificationPage>();
             builder.Services.AddSingleton<IApiService, ApiService>();
