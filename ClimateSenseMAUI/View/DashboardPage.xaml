@@ -16,46 +16,40 @@
         <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png" />
     </ContentPage.ToolbarItems>
 
-    <CollectionView ItemsSource="{Binding RoomList}" SelectionMode="None">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="models:DashboardRooms">
-                <Frame>
-                    <Frame.GestureRecognizers>
+    <RefreshView Command="{Binding GetRoomsCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <CollectionView ItemsSource="{Binding RoomList}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:DashboardRooms">
+                    <Frame>
+                        <Frame.GestureRecognizers>
 
                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=GoToRoomDetailsCommand}" CommandParameter="{Binding .}" />
-                    </Frame.GestureRecognizers>
-                    <Grid RowDefinitions="*,*">
-                        <BoxView
-                            CornerRadius="10"
-                            HeightRequest="20"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            WidthRequest="20"
-                            Color="Black" />
-                        <Label
-                            Grid.Row="0"
-                            FontSize="16"
-                            LineBreakMode="NoWrap"
-                            Text="{Binding RoomName}"
-                            TextColor="Black"
-                            VerticalTextAlignment="Center" />
+                        </Frame.GestureRecognizers>
+                        <Grid RowDefinitions="*,*,*">
+                            <Label
+                                Grid.Row="0"
+                                FontSize="36"
+                                LineBreakMode="NoWrap"
+                                Text="{Binding RoomName}"
+                                TextColor="Black"
+                                VerticalTextAlignment="Center" />
+                            <Line BackgroundColor="{StaticResource Gray400}" />
 
-                        <CollectionView Grid.Row="1" ItemsSource="{Binding CurrentMeasurements}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:ObservableMeasurement">
-                                    <StackLayout>
-                                        <Label Text="Type: " />
-                                        <Label Text="{Binding MeasurementType}" />
-                                        <Label Text="Værdi: " />
-                                        <Label Text="{Binding Value}" />
-                                    </StackLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </Grid>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                            <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Fill">
+                                <CollectionView ItemsSource="{Binding CurrentMeasurements}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:ObservableMeasurement">
+                                            <Label Text="{Binding ValueWithDenomination}" FontSize="30" />
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
 
 </ContentPage>

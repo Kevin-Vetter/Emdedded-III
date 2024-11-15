@@ -14,11 +14,15 @@ public partial class ObservableMeasurement : ObservableObject
     private string? device;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ValueWithDenomination))]
     private MeasurementType? measurementType;
 
     [ObservableProperty]
     private string? location;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ValueWithDenomination))]
     private double value;
+
+    public string ValueWithDenomination => MeasurementType.HasValue ? Value + DenominationDictionary.Denominations[MeasurementType.Value] : "";
 }
