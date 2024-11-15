@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ClimateSenseMAUI.View.DashboardPage"
-             xmlns:models="clr-namespace:ClimateSenseModels;assembly=ClimateSenseModels"
-             xmlns:vm="clr-namespace:ClimateSenseMAUI.ViewModel"
-             x:DataType="vm:DashboardViewModel"
-             Title="Dashboard">
+<ContentPage
+    x:Class="ClimateSenseMAUI.View.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:ClimateSenseModels;assembly=ClimateSenseModels"
+    xmlns:vm="clr-namespace:ClimateSenseMAUI.ViewModel"
+    Title="Dashboard"
+    x:DataType="vm:DashboardViewModel">
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
     </Shell.BackButtonBehavior>
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Command="{Binding OpenSettingsCommand}" IconImageSource="gear.png" />-->
-        <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png"/>
+        <ToolbarItem Command="{Binding LogOutCommand}" IconImageSource="bye.png" />
     </ContentPage.ToolbarItems>
 
     <CollectionView ItemsSource="{Binding RoomList}" SelectionMode="None">
@@ -21,17 +22,23 @@
                 <Frame>
                     <Frame.GestureRecognizers>
 
-                        <TapGestureRecognizer
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=GoToRoomDetailsCommand}"
-                            CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=GoToRoomDetailsCommand}" CommandParameter="{Binding .}" />
                     </Frame.GestureRecognizers>
                     <Grid RowDefinitions="*,*">
+                    <Grid ColumnDefinitions="50,*" HeightRequest="50">
+                        <BoxView
+                            CornerRadius="10"
+                            HeightRequest="20"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            WidthRequest="20"
+                            Color="Black" />
                         <Label
                             Grid.Row="0"
                             FontSize="16"
                             LineBreakMode="NoWrap"
-                            TextColor="Black"
                             Text="{Binding RoomName}"
+                            TextColor="Black"
                             VerticalTextAlignment="Center" />
 
                         <CollectionView Grid.Row="1" ItemsSource="{Binding CurrentMeasurements}">

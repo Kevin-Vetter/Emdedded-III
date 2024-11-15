@@ -13,8 +13,8 @@ public partial class LoginPage : ContentPage
 		BindingContext = _vm;
 	}
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        _vm.CheckLoggedIn();
+        await _vm.CheckLoggedInAsync();
     }
 }
