@@ -1,4 +1,4 @@
-namespace ClimateSenseService;
+namespace ClimateSenseServices;
 
 public class Constants
 {

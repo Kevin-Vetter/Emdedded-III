@@ -2,7 +2,7 @@ namespace ClimateSenseModels;
 
 public class DashboardClimateInput
 {
-    public string roomname { get; set; }
-    public MeasurementType type { get; set; }
-    public DateTime from { get; set; }
+    public string Roomname { get; set; }
+    public MeasurementType Type { get; set; }
+    public DateTime From { get; set; }
 }

@@ -1,7 +1,6 @@
 ﻿using ClimateSenseMAUI.View;
 using ClimateSenseMAUI.ViewModel;
 using ClimateSenseServices;
-using ClimateSenseService;
 using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
 using MQTTnet;

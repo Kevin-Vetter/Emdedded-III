@@ -1,6 +1,6 @@
 using ClimateSenseModels;
 
-namespace ClimateSenseService;
+namespace ClimateSenseServices;
 
 public interface IApiService
 {

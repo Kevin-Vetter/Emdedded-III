@@ -1,6 +1,6 @@
 using ClimateSenseModels;
 
-namespace ClimateSenseService;
+namespace ClimateSenseServices;
 
 public class RoomService(IApiService apiService) : IRoomService
 {
