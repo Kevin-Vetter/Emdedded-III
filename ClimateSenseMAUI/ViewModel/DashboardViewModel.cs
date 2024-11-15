@@ -12,19 +12,31 @@ using ClimateSenseModels;
 using ClimateSenseServices;
 using CommunityToolkit.Mvvm.Messaging;
 using MQTTnet.Client;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ClimateSenseMAUI.ViewModel
 {
-    public partial class DashboardViewModel(IMqttService mqttService) : BaseViewModel
+    public partial class DashboardViewModel : BaseViewModel
     {
         private readonly IApiService _apiService;
+        public ObservableCollection<DashboardRooms> RoomList { get; } = new();
+        
         public DashboardViewModel(IApiService service)
         {
             _apiService = service;
-
-
         }
-        public ObservableCollection<DashboardRooms> RoomList { get; } = new();
+
+        public async Task CheckLoggedInAsync()
+        {
+            var token = await SecureStorage.GetAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+
+            if (!handler.CanReadToken(token))
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}", true);
+            }
+        }
+
 
         [RelayCommand]
         async Task GetRooms()
@@ -52,7 +64,7 @@ namespace ClimateSenseMAUI.ViewModel
         public async Task LogOut()
         {
             await SecureStorage.SetAsync("access_token", "");
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync(nameof(LoginPage));
         }
     }
 }

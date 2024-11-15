@@ -16,6 +16,7 @@ namespace ClimateSenseMAUI
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
             Routing.RegisterRoute(nameof(RoomDetailPage), typeof(RoomDetailPage));
             BindingContext = IPlatformApplication.Current?.Services.GetRequiredService<NotificationViewModel>();
         }

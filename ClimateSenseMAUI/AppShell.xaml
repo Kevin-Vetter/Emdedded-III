@@ -1,18 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="ClimateSenseMAUI.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ClimateSenseMAUI.View"
-    Title="ClimateSenseMAUI"
-    FlyoutBehavior="Disabled"
     xmlns:vm="clr-namespace:ClimateSenseMAUI.ViewModel"
-    x:DataType="vm:NotificationViewModel">
+    Title="ClimateSenseMAUI"
+    x:DataType="vm:NotificationViewModel"
+    FlyoutBehavior="Disabled">
 
     <Shell.TitleView>
-        <StackLayout>
-            <Button HorizontalOptions="Start" CornerRadius="50" BorderColor="#cae9f3" BorderWidth="2" TextColor="Black" Margin="2" BackgroundColor="White" HeightRequest="40" WidthRequest="40" Command="{Binding OpenNotificationPageCommand}" Text="{Binding Notifications.Count}" />
-        </StackLayout>
+        <Button
+            Margin="2"
+            BackgroundColor="White"
+            BorderColor="#cae9f3"
+            BorderWidth="2"
+            Command="{Binding OpenNotificationPageCommand}"
+            CornerRadius="50"
+            HeightRequest="40"
+            HorizontalOptions="Start"
+            Text="{Binding Notifications.Count}"
+            TextColor="Black"
+            WidthRequest="40" />
     </Shell.TitleView>
 
     <ShellContent
@@ -23,6 +32,6 @@
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate local:DashboardPage}"
-        Route="DashboardPage"/>
+        Route="DashboardPage" />
 
 </Shell>

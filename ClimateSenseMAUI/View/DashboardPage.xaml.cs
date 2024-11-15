@@ -17,10 +17,9 @@ public partial class DashboardPage : ContentPage
         BindingContext = vm;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        base.OnAppearing();
+        await _vm.CheckLoggedInAsync();
         _vm.GetRoomsCommand.Execute(null);
-        
     }
 }

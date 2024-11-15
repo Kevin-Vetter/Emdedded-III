@@ -18,7 +18,7 @@ namespace ClimateSenseMAUI.ViewModel
 {
     public partial class LoginViewModel(Auth0Client auth0Client, IMqttService mqttService) : BaseViewModel
     {
-        public async Task CheckLoggedIn()
+        public async Task CheckLoggedInAsync()
         {
           var token = await SecureStorage.GetAsync("access_token");
             var handler = new JwtSecurityTokenHandler();

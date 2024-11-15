@@ -8,9 +8,5 @@
 
             MainPage = new AppShell();
         }
-
-        protected override async void OnStart()
-        {
-        }
     }
 }
