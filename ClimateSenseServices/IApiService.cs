@@ -4,7 +4,6 @@ namespace ClimateSenseServices;
 
 public interface IApiService
 {
-   Task<List<ClimateMeasurement>> RefreshDataAsync();
-   Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type);
    Task<List<string>> GetLocations();
+   Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type);
 }

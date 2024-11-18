@@ -7,99 +7,38 @@ namespace ClimateSenseServices;
 
 public class ApiService : IApiService
 {
-    HttpClient _client;
-    JsonSerializerOptions _serializerOptions;
-    public List<ClimateMeasurement> Items { get; private set; }
-    public List<string> Locations { get; private set; }
-
-    public ApiService()
+    HttpClient _client = new();
+    JsonSerializerOptions _serializerOptions = new()
     {
-        _client = new HttpClient();
-        _serializerOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true
-        };
-    }
-
-    public async Task<List<ClimateMeasurement>> RefreshDataAsync()
-    {
-        Items = new List<ClimateMeasurement>();
-
-        UriBuilder builder = new(Constants.BaseUrl) { Path = Constants.Endpoint };
-        try
-        {
-            HttpResponseMessage response = await _client.GetAsync(builder.Uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Items = JsonSerializer.Deserialize<List<ClimateMeasurement>>(content, _serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return Items;
-    }
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    };
 
     public async Task<List<string>> GetLocations()
     {
-        Locations = new List<string>();
-        try
-        {
-            HttpResponseMessage response = null;
-            UriBuilder builder = new(Constants.BaseUrl) { Path = $"{Constants.Endpoint}/locations" };
-            response = await _client.GetAsync(builder.Uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Locations = JsonSerializer.Deserialize<List<string>>(content, _serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
+        UriBuilder builder = new(Constants.BaseUrl) { Path = "Measurement/locations" };
+        HttpResponseMessage response = await _client.GetAsync(builder.Uri);
 
-        return Locations;
+        response.EnsureSuccessStatusCode();
+        string content = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<string>>(content, _serializerOptions) ?? new List<string>();
     }
 
-    public async Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type)
+    public async Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type)
     {
-        Items = new List<ClimateMeasurement>();
-        try
+        string baseUrl = Constants.BaseUrl;
+
+        UriBuilder uriBuilder = new UriBuilder(new Uri(baseUrl))
         {
-            HttpResponseMessage response = null;
-            string encodedLocation = Uri.EscapeDataString(room); // Ensure location is URL-encoded
-            string encodedFrom = Uri.EscapeDataString(from.ToString()); // Ensure 'from' is URL-encoded
-            string measurementType = ((int)type).ToString(); // Measurement type should be an integer
+            Path = "Measurement"
+        };
 
-// Build the query string
-            string queryString = $"?location={encodedLocation}&from={encodedFrom}&measurementType={measurementType}";
-            UriBuilder builder = new UriBuilder(Constants.BaseUrl)
-            {
-                Path = Constants.Endpoint + queryString
-            };
-            
+        uriBuilder.Query = $"location={location}&from={from?.ToString()}&measurementType={(int)type}";
 
-// Add the required headers, such as accept: text/plain
-            _client.DefaultRequestHeaders.Clear(); // Ensure headers are cleared before adding
-            _client.DefaultRequestHeaders.Add("Accept", "text/plain");
+        HttpResponseMessage httpResponseMessage = await _client.GetAsync(uriBuilder.Uri);
 
-            response = await _client.GetAsync(builder.Uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Items = JsonSerializer.Deserialize<List<ClimateMeasurement>>(content, _serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
+        httpResponseMessage.EnsureSuccessStatusCode();
 
-        return Items;
+        return JsonSerializer.Deserialize<List<ClimateMeasurement>>(await httpResponseMessage.Content.ReadAsStringAsync()) ?? new List<ClimateMeasurement>();
     }
 }

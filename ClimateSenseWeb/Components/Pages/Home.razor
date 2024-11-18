@@ -1,7 +1,13 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@using ClimateSenseModels
+@using ClimateSenseServices
+@inject IApiService apiService
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<button @onclick='async () => await apiService.GetMeasurements("living room", DateTime.Now.AddDays(-10), MeasurementType.Temperature)'>Click</button>
