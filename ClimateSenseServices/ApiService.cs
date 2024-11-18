@@ -72,7 +72,21 @@ public class ApiService : IApiService
         try
         {
             HttpResponseMessage response = null;
-            UriBuilder builder = new(Constants.BaseUrl) { Path = Constants.Endpoint + $"{"?location="+room+"&from="+from+"&measurementType="+(int)type}" };
+            string encodedLocation = Uri.EscapeDataString(room); // Ensure location is URL-encoded
+            string encodedFrom = Uri.EscapeDataString(from.ToString()); // Ensure 'from' is URL-encoded
+            string measurementType = ((int)type).ToString(); // Measurement type should be an integer
+
+// Build the query string
+            string queryString = $"?location={encodedLocation}&from={encodedFrom}&measurementType={measurementType}";
+            UriBuilder builder = new UriBuilder(Constants.BaseUrl)
+            {
+                Path = Constants.Endpoint + queryString
+            };
+
+// Add the required headers, such as accept: text/plain
+            _client.DefaultRequestHeaders.Clear(); // Ensure headers are cleared before adding
+            _client.DefaultRequestHeaders.Add("Accept", "text/plain");
+
             response = await _client.GetAsync(builder.Uri);
             if (response.IsSuccessStatusCode)
             {
@@ -84,7 +98,7 @@ public class ApiService : IApiService
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
+
         return Items;
     }
-    
 }
