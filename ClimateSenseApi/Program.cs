@@ -9,6 +9,10 @@ using ClimateSenseApi.Models;
 using ClimateSenseApi.Repositories;
 using ClimateSenseServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptions<AppSettings>().Bind(builder.Configuration);
+
+var auth0 = builder.Configuration.GetSection("Auth0");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+          .AddJwtBearer(options =>
+          {
+              options.Authority = auth0["Domain"];
+              options.Audience = auth0["Audience"];
+
+              options.Events = new JwtBearerEvents
+              {
+                  OnChallenge = context =>
+                  {
+                      context.Response.OnStarting(async () =>
+                      {
+                          await context.Response.WriteAsync(
+                              JsonSerializer.Serialize(new { output = "You are not authorized!" }));
+                      });
+
+                      return Task.CompletedTask;
+                  }
+              };
+          });
+
+
 builder.Services.AddDbContext<MeasurementContext>(x => x.UseSqlite("Name=Measurement"));
 builder.Services.AddSingleton<MqttFactory>();
 builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
@@ -55,6 +84,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

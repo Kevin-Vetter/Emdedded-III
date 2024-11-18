@@ -2,6 +2,11 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ClimateSenseModels;
+using Auth0.OidcClient;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
+
+
 
 namespace ClimateSenseServices;
 
@@ -11,8 +16,9 @@ public class ApiService : IApiService
     JsonSerializerOptions _serializerOptions;
     public List<ClimateMeasurement> Items { get; private set; }
     public List<string> Locations { get; private set; }
+    private readonly Auth0Client _auth0Client;
 
-    public ApiService()
+    public ApiService(Auth0Client auth0Client)
     {
         _client = new HttpClient();
         _serializerOptions = new JsonSerializerOptions
@@ -20,9 +26,10 @@ public class ApiService : IApiService
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
         };
+        _auth0Client = auth0Client;
     }
 
-    public async Task<List<ClimateMeasurement>> RefreshDataAsync()
+    public async Task<List<ClimateMeasurement>> RefreshDataAsync(JsonWebToken token)
     {
         Items = new List<ClimateMeasurement>();
 
@@ -44,7 +51,7 @@ public class ApiService : IApiService
         return Items;
     }
 
-    public async Task<List<string>> GetLocations()
+    public async Task<List<string>> GetLocations(JsonWebToken token)
     {
         Locations = new List<string>();
         try
@@ -66,11 +73,13 @@ public class ApiService : IApiService
         return Locations;
     }
 
-    public async Task<List<ClimateMeasurement>> GetRoomMessurent(string room, DateTime? from, MeasurementType type)
+    public async Task<List<ClimateMeasurement>> GetRoomMessurent(JsonWebToken token, string room, DateTime? from, MeasurementType type)
     {
         Items = new List<ClimateMeasurement>();
         try
         {
+            _client.DefaultRequestHeaders.Authorization
+                = new BasicAuthenticationHeaderValue("Bearer", token.ToString());
             HttpResponseMessage response = null;
             UriBuilder builder = new(Constants.BaseUrl) { Path = Constants.Endpoint + $"{"?location="+room+"&from="+from+"&measurementType="+(int)type}" };
             response = await _client.GetAsync(builder.Uri);
