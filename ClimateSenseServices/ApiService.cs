@@ -82,6 +82,7 @@ public class ApiService : IApiService
             {
                 Path = Constants.Endpoint + queryString
             };
+            
 
 // Add the required headers, such as accept: text/plain
             _client.DefaultRequestHeaders.Clear(); // Ensure headers are cleared before adding
