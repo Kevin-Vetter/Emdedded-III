@@ -1,87 +1,66 @@
 ﻿using System.Security.Authentication;
-using ClimateSenseMAUI.View;
-using ClimateSenseMAUI.ViewModel;
-using ClimateSenseServices;
-using Microsoft.Extensions.Logging;
 using Auth0.OidcClient;
+using ClimateSenseServices;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Logging;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
-using Syncfusion.Maui.Core.Hosting;
 
-namespace ClimateSenseMAUI
+namespace ClimateSenseMAUI;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts => { fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); });
+
+        builder.Services.AddMauiBlazorWebView();
+
+        builder.Services.AddSingleton(new Auth0Client(new()
         {
-            AppContext.SetSwitch("System.Reflection.NullabilityInfoContext.IsSupported", true);
+            Domain = Appsettings.Auth0["Domain"],
+            ClientId = Appsettings.Auth0["ClientId"],
+            RedirectUri = Appsettings.Auth0["RedirectUri"],
+            PostLogoutRedirectUri = Appsettings.Auth0["PostLogoutRedirectUri"],
+            Scope = Appsettings.Auth0["Scope"]
+        }));
 
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureSyncfusionCore()
-                .ConfigureFonts(fonts =>
+        builder.Services.AddAuthorizationCore();
+        builder.Services.AddScoped<AuthenticationStateProvider, Auth0AuthenticationStateProvider>();
+
+        builder.Services.AddSingleton(serviceProvider =>
+        {
+            return new MqttClientOptionsBuilder()
+                .WithTcpServer(Appsettings.MqttBroker["Host"])
+                .WithCredentials(Appsettings.MqttBroker["Username"], Appsettings.MqttBroker["Password"])
+                .WithTlsOptions(x =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
-
-            builder.Services.AddSingleton(new Auth0Client(new()
-            {
-                Domain = Appsettings.Auth0["Domain"],
-                ClientId = Appsettings.Auth0["ClientId"],
-                RedirectUri = Appsettings.Auth0["RedirectUri"],
-                PostLogoutRedirectUri = Appsettings.Auth0["PostLogoutRedirectUri"],
-                Scope = Appsettings.Auth0["Scope"]
-            }));
-
-            builder.Services.AddSingleton(serviceProvider =>
-            {
-                return new MqttClientOptionsBuilder()
-                    .WithTcpServer(Appsettings.MqttBroker["Host"])
-                    .WithCredentials(Appsettings.MqttBroker["Username"], Appsettings.MqttBroker["Password"])
-                    .WithTlsOptions(x =>
-                    {
-                        x.UseTls();
-                        x.WithSslProtocols(SslProtocols.Tls12);
-                        x.WithIgnoreCertificateChainErrors();
-                    })
-                    .WithProtocolVersion(MqttProtocolVersion.V311)
-                    .WithWillTopic("health")
-                    .WithWillPayload("dead")
-                    .WithWillQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
-                    .WithWillRetain();
-            });
-            builder.Services.AddSingleton<MqttFactory>();
-            builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
-            {
-                MqttFactory mqttFactory = serviceProvider.GetRequiredService<MqttFactory>();
-                IMqttClient mqttClient = mqttFactory.CreateMqttClient();
-                return mqttClient;
-            });
-            builder.Services.AddSingleton<IMqttService, MqttService>();
-            builder.Services.AddSingleton<IApiService, ApiService>();
-           
-            builder.Services.AddSingleton<NotificationPage>();
-            builder.Services.AddSingleton<IApiService, ApiService>();
-            builder.Services.AddSingleton<NotificationViewModel>();
-
-            builder.Services.AddSingleton<DashboardPage>();
-            builder.Services.AddSingleton<DashboardViewModel>();
-
-            builder.Services.AddTransient<LoginPage>();
-            builder.Services.AddTransient<LoginViewModel>();
-      
-            builder.Services.AddTransient<RoomDetailPage>(); 
-            builder.Services.AddTransient<RoomDetailViewModel>();
+                    x.UseTls();
+                    x.WithSslProtocols(SslProtocols.Tls12);
+                    x.WithIgnoreCertificateChainErrors();
+                })
+                .WithProtocolVersion(MqttProtocolVersion.V311);
+        });
+        builder.Services.AddSingleton<MqttFactory>();
+        builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
+        {
+            MqttFactory mqttFactory = serviceProvider.GetRequiredService<MqttFactory>();
+            IMqttClient mqttClient = mqttFactory.CreateMqttClient();
+            return mqttClient;
+        });
+        builder.Services.AddSingleton<IMqttService, MqttService>();
+        builder.Services.AddSingleton<IApiService, ApiService>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
 #endif
-            
-            return builder.Build();
-        }
+
+        return builder.Build();
     }
 }

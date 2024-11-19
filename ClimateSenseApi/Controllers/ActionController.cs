@@ -18,21 +18,21 @@ public class ActionController(ILogger<ActionController> logger, IMqttService mqt
     [HttpPost("led-on")]
     public async Task<bool> LedOn()
     {
-        MqttClientPublishResult result = await mqttService.Publish($"{_topic}/led", "on");
+        MqttClientPublishResult result = await mqttService.PublishAsync($"{_topic}/led", "on");
         return result.IsSuccess;
     }
 
     [HttpPost("led-off")]
     public async Task<bool> LedOff()
     {
-        MqttClientPublishResult result = await mqttService.Publish($"{_topic}/led", "off");
+        MqttClientPublishResult result = await mqttService.PublishAsync($"{_topic}/led", "off");
         return result.IsSuccess;
     }
 
     [HttpPost("servo")]
     public async Task<bool> Servo(int turnDegrees)
     {
-        MqttClientPublishResult result = await mqttService.Publish($"{_topic}/servo", turnDegrees);
+        MqttClientPublishResult result = await mqttService.PublishAsync($"{_topic}/servo", turnDegrees);
         return result.IsSuccess;
     }
 }
