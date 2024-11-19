@@ -5,6 +5,7 @@ using ClimateSenseModels;
 using Auth0.OidcClient;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.JsonWebTokens;
+using IdentityModel.OidcClient;
 
 
 
@@ -49,6 +50,11 @@ public class ApiService : IApiService
         }
 
         return Items;
+    }
+
+    public async Task<LoginResult> Login()
+    {
+       return await _auth0Client.LoginAsync();
     }
 
     public async Task<List<string>> GetLocations(JsonWebToken token)

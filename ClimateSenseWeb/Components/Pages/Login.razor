@@ -1,5 +1,7 @@
 @page "/login"
 @using ClimateSenseWeb.Dto
+@inject ClimateSenseServices.IApiService _service
+@inject ISession session
 <PageTitle>ClimateSense Login</PageTitle>
 <h3>Login</h3>
 
@@ -23,6 +25,12 @@
 @code {
     private User? _user { get; set; } = new();
 
+    private async Task LoginCall()
+    {
+        var loginResult = await _service.Login();
+
+        var token = loginResult.AccessToken;
+    }
 
     private void Callback()
     {
