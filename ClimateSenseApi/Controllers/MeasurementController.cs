@@ -1,3 +1,4 @@
+using Auth0.OidcClient;
 using ClimateSenseApi.Repositories;
 using ClimateSenseModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ namespace ClimateSenseApi.Controllers;
 public class MeasurementController(IMeasurementRepository measurementRepository) : ControllerBase
 {
     [HttpGet("locations")]
+    [Authorize(Permissions.SensorRead)]
     public async Task<List<string>> GetList() => await measurementRepository.GetLocations();
     
 

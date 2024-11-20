@@ -13,7 +13,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
-builder.Services.AddSession();
 
 var app = builder.Build();
 

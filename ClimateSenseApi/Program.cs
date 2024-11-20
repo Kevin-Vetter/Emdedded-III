@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using ClimateSenseModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptions<AppSettings>().Bind(builder.Configuration);
 
 var auth0 = builder.Configuration.GetSection("Auth0");
+
+builder.Services
+    .AddAuthorizationBuilder()
+    .AddPolicy(Permissions.SensorRead, policy => policy.Requirements.Add(new HasScopeRequirement(Permissions.SensorRead, auth0["Domain"])));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
           .AddJwtBearer(options =>

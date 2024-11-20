@@ -1,7 +1,9 @@
 @page "/login"
 @using ClimateSenseWeb.Dto
+@using System.Text
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ClimateSenseServices.IApiService _service
-@inject ISession session
+@inject ProtectedSessionStorage session
 <PageTitle>ClimateSense Login</PageTitle>
 <h3>Login</h3>
 
@@ -25,12 +27,8 @@
 @code {
     private User? _user { get; set; } = new();
 
-    private async Task LoginCall()
-    {
-        var loginResult = await _service.Login();
-
-        var token = loginResult.AccessToken;
-    }
+    private async Task LoginCall() => await session.SetAsync("token", (await _service.Login()).AccessToken);
+    
 
     private void Callback()
     {
