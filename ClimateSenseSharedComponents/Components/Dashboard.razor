@@ -7,7 +7,7 @@
 <div class="row">
     @foreach (DashboardRoom room in _rooms.Where(room => room.Measurements.Any()))
     {
-        <div class="col col-md-3">
+        <div class="col col-sm-2 col-md-3">
             <div class="card card-transition h-100 shadow-sm cursor-pointer">
                 <div class="card-body">
                     <h4 class="card-title text-center pb-1 mb-2 border-bottom">@room.Location</h4>
