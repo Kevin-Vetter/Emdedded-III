@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ClimateSenseServices\ClimateSenseServices.csproj" />
-        <ProjectReference Include="..\ClimateSenseSharedComponents\ClimateSenseSharedComponents.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
         <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
@@ -20,6 +15,10 @@
 
     <ItemGroup>
         <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ClimateSenseSharedComponents\ClimateSenseSharedComponents.csproj" />
     </ItemGroup>
 
 </Project>
