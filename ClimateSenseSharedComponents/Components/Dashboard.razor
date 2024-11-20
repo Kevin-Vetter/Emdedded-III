@@ -1,0 +1,87 @@
+@using System.Text.Json
+@using MQTTnet.Client
+@inject IApiService ApiService
+@inject IMqttService MqttService
+
+<h3>Dashboard</h3>
+<div class="row">
+    @foreach (DashboardRoom room in _rooms.Where(room => room.Measurements.Any()))
+    {
+        <div class="col col-sm-2 col-md-3">
+            <div class="card card-transition h-100 shadow-sm cursor-pointer">
+                <div class="card-body">
+                    <h4 class="card-title text-center pb-1 mb-2 border-bottom">@room.Location</h4>
+                    <div class="card-text container">
+                        <div class="row">
+                            @foreach (Measurement measurement in room.Measurements.OrderByDescending(x => x.MeasurementType))
+                            {
+                                <div class="col mb-3">
+                                    <p class="text-center h5 m-3">@measurement.Value @DenominationDictionary.Denominations[measurement.MeasurementType]</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+
+    .card-transition {
+        transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
+
+@code {
+    private List<DashboardRoom> _rooms = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<string> locations = await ApiService.GetLocations();
+        _rooms = locations.Select(location => new DashboardRoom(location)).ToList();
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await MqttService.ConnectAsync();
+            await MqttService.SubscribeAsync($"location/+/measurement/+", OnMessageReceivedEvent);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnMessageReceivedEvent(MqttApplicationMessageReceivedEventArgs arg)
+    {
+        Measurement? measurement = JsonSerializer.Deserialize<Measurement>(arg.ApplicationMessage.PayloadSegment);
+
+        if (measurement == null) return;
+
+        DashboardRoom? room = _rooms.FirstOrDefault(x => x.Location == measurement.Location);
+
+        if (room == null)
+        {
+            room = new DashboardRoom(measurement.Location);
+            _rooms.Add(room);
+        }
+
+        room.UpdateMeasurements(measurement);
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

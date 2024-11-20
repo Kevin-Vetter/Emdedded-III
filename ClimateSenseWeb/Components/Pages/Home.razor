@@ -1,31 +1,6 @@
 ﻿@page "/"
-@using ClimateSenseWeb.Components.SubComponent
-@using Microsoft.AspNetCore.Authorization
-@inject NavigationManager _NavigationManager
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        
-        <h1>Hello, world!</h1>
+<Dashboard @rendermode="InteractiveServer"/>
 
-        Welcome to your new app.
-
-        <Graph />
-    </Authorized>
-    <NotAuthorized>
-        @{
-            redirectbacktologin();
-        }
-    </NotAuthorized>
-
-</AuthorizeView>
-
-@code {
-
-    private void redirectbacktologin()
-    {
-        //_NavigationManager.NavigateTo("/login");
-    }
-}

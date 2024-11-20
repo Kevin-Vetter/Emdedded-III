@@ -6,8 +6,6 @@ namespace ClimateSenseServices;
 
 public interface IApiService
 {
-   Task<LoginResult> Login();
-   Task<List<ClimateMeasurement>> RefreshDataAsync(JsonWebToken token);
-   Task<List<ClimateMeasurement>> GetRoomMessurent(JsonWebToken token, string room, DateTime? from, MeasurementType type);
-   Task<List<string>> GetLocations(JsonWebToken token);
+   Task<List<string>> GetLocations();
+   Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type);
 }

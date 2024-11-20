@@ -11,15 +11,15 @@ public class MeasurementWorkerService(ILogger<MeasurementWorkerService> logger, 
 {
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        await mqttService.Connect();
-        await mqttService.Subscribe("location/+/measurement/+", OnMessageReceived);
+        await mqttService.ConnectAsync();
+        await mqttService.SubscribeAsync("location/+/measurement/+", OnMessageReceived);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (!mqttService.ClientIsConnected)
         {
-            await mqttService.Reconnect();
+            await mqttService.ReconnectAsync();
         }
     }
 

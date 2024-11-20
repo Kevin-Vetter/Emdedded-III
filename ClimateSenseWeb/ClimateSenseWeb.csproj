@@ -7,7 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Radzen.Blazor" Version="5.6.1" />
+        <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+        <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
+        <PackageReference Include="Radzen.Blazor" Version="5.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ClimateSenseSharedComponents\ClimateSenseSharedComponents.csproj" />
     </ItemGroup>
 
     <ItemGroup>

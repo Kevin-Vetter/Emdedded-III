@@ -12,8 +12,8 @@ namespace ClimateSenseMAUI
         {
             { "Domain", "dev-dpa8tyoky8r1sgd3.us.auth0.com" },
             { "ClientId", "KkEXTxrvVtvqnD2HYtOFss2NP1xf7rbD"},
-            { "RedirectUri", "myapp://callback/"},
-            { "PostLogoutRedirectUri", "myapp://callback/" },
+            { "RedirectUri", "myapp://callback"},
+            { "PostLogoutRedirectUri", "myapp://callback" },
             { "Scope", "openid profile email" },
         };
 
