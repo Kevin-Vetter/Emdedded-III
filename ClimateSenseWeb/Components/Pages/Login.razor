@@ -1,9 +1,14 @@
 @page "/login"
 @using ClimateSenseWeb.Dto
+@using System.Text
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject AuthenticationStateProvider auth
+@inject NavigationManager Navigation
+@inject ProtectedSessionStorage session
 <PageTitle>ClimateSense Login</PageTitle>
 <h3>Login</h3>
 
-<EditForm method="post" Model="_user" OnSubmit="Callback">
+<EditForm method="post" Model="_user" OnSubmit="LoginCall">
     <div>
         <label>
             Login:
@@ -23,6 +28,11 @@
 @code {
     private User? _user { get; set; } = new();
 
+    // private async Task LoginCall() => await session.SetAsync("token", (await (Auth0AuthenticationStateProvider)auth()).AccessToken);
+    private async Task LoginCall() => Navigation.NavigateTo("/Account/Login");
+
+
+    
 
     private void Callback()
     {

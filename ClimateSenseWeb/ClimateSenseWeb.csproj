@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    
     <ItemGroup>
         <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
@@ -14,11 +15,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models\" />
+      <ProjectReference Include="..\ClimateSenseSharedComponents\ClimateSenseSharedComponents.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ClimateSenseSharedComponents\ClimateSenseSharedComponents.csproj" />
+      <ProjectReference Include="..\ClimateSenseModels\ClimateSenseModels.csproj" />
+      <ProjectReference Include="..\ClimateSenseServices\ClimateSenseServices.csproj" />
     </ItemGroup>
 
 </Project>

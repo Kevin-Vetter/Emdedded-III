@@ -2,6 +2,12 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ClimateSenseModels;
+using Auth0.OidcClient;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
+using IdentityModel.OidcClient;
+
+
 
 namespace ClimateSenseServices;
 

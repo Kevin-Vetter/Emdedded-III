@@ -1,6 +1,44 @@
 ﻿@page "/"
+@using ClimateSenseSharedComponents.Components
+@using ClimateSenseWeb.Middleware.Authentication
+@using System.Text.Json
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-<Dashboard @rendermode="InteractiveServer"/>
+<Dashboard @rendermode="InteractiveServer" />
+<AuthorizeView>
+    <Authorized>
+        @if (_authenticationState!.User.Claims != null)
+        {
+            @foreach (var a in _authenticationState!.User!.Claims)
+            {
+                <pre>@JsonSerializer.Serialize(a)</pre>
+            }
+
+            @foreach (var a in _authenticationState!.User!.Identities)
+            {
+                <pre>@JsonSerializer.Serialize(a)</pre>
+            }
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private AuthenticationState? _authenticationState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState != null)
+        {
+            _authenticationState = await AuthenticationState;
+            StateHasChanged();
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+}
 
