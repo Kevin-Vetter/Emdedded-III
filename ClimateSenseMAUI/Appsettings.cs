@@ -10,8 +10,8 @@ namespace ClimateSenseMAUI
     {
         public static Dictionary<string, string> Auth0 = new()
         {
-            { "Domain", "dev-q7uyjfdwm7hsf1zv.eu.auth0.com" },
-            { "ClientId", "2hQEAQeYRltTJO614LmhthAdR6khR44r"},
+            { "Domain", "dev-dpa8tyoky8r1sgd3.us.auth0.com" },
+            { "ClientId", "KkEXTxrvVtvqnD2HYtOFss2NP1xf7rbD"},
             { "RedirectUri", "myapp://callback"},
             { "PostLogoutRedirectUri", "myapp://callback" },
             { "Scope", "openid profile email" },

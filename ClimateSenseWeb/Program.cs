@@ -8,6 +8,8 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
+using Radzen;
+using Radzen.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +53,7 @@ builder.Services.AddSingleton<MqttClientOptionsBuilder>(_ =>
 
 builder.Services.AddSingleton<IMqttService, MqttService>();
 builder.Services.AddMemoryCache();
-
+builder.Services.AddRadzenComponents();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
