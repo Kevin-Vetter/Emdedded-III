@@ -4,8 +4,8 @@
 @inject IMqttService MqttService
 
 <h3>Dashboard</h3>
-<div class="row">
-    @foreach (DashboardRoom room in _rooms.Where(room => room.Measurements.Any()))
+<div class="row gy-3">
+    @foreach (DashboardRoom room in _rooms)
     {
         <div class="col col-sm-2 col-md-3">
             <div class="card card-transition h-100 shadow-sm cursor-pointer">
@@ -15,7 +15,7 @@
                         <div class="row">
                             @foreach (Measurement measurement in room.Measurements.OrderByDescending(x => x.MeasurementType))
                             {
-                                <div class="col mb-3">
+                                <div class="col">
                                     <p class="text-center h5 m-3">@measurement.Value @DenominationDictionary.Denominations[measurement.MeasurementType]</p>
                                 </div>
                             }
@@ -48,9 +48,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        List<string> locations = await ApiService.GetLocations();
-        _rooms = locations.Select(location => new DashboardRoom(location)).ToList();
-
         await base.OnInitializedAsync();
     }
 
@@ -58,6 +55,9 @@
     {
         if (firstRender)
         {
+            List<string> locations = await ApiService.GetLocations();
+            _rooms = locations.Select(location => new DashboardRoom(location)).ToList();
+            StateHasChanged();
             await MqttService.ConnectAsync();
             await MqttService.SubscribeAsync($"location/+/measurement/+", OnMessageReceivedEvent);
         }
