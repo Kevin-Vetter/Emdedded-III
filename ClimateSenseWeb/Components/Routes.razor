@@ -1,11 +1,12 @@
 ﻿@using ClimateSenseWeb.Components.Pages
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)"/>
-
-        
-        
-      
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+            <NotAuthorized>
+                <a href="Account/Login">Log in</a>
+            </NotAuthorized>
+        </AuthorizeRouteView>
+        @* <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)"/> *@
         <FocusOnNavigate RouteData="routeData" Selector="h1"/>
     </Found>
 </Router>

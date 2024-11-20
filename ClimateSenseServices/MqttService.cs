@@ -6,26 +6,31 @@ using MQTTnet.Protocol;
 
 namespace ClimateSenseServices;
 
-public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttClientOptionsBuilder builder) : IMqttService
+public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttClientOptionsBuilder builder) : IMqttService, IDisposable
 {
     public bool ClientIsConnected => mqttClient.IsConnected;
 
-    public async Task<MqttClientConnectResult> Connect(MqttClientOptionsBuilder? optionsBuilder = null, CancellationToken? cancellationToken = null)
+    public async Task<MqttClientConnectResult> ConnectAsync(MqttClientOptionsBuilder? optionsBuilder = null, CancellationToken? cancellationToken = null)
     {
+        if (ClientIsConnected)
+        {
+            await mqttClient.DisconnectAsync();
+        }
+
         optionsBuilder ??= builder;
         return await mqttClient.ConnectAsync(optionsBuilder.Build(), cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task Reconnect(CancellationToken? cancellationToken = null)
+    public async Task ReconnectAsync(CancellationToken? cancellationToken = null)
     {
         await mqttClient.ReconnectAsync(cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task<MqttClientPublishResult> Publish(string topic, dynamic payload, bool asJson = false, MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtMostOnce, CancellationToken? cancellationToken = null)
+    public async Task<MqttClientPublishResult> PublishAsync(string topic, dynamic payload, bool asJson = false, MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtMostOnce, CancellationToken? cancellationToken = null)
     {
         if (!ClientIsConnected)
         {
-            await Reconnect();
+            await ReconnectAsync();
         }
 
         return await mqttClient.PublishAsync(new MqttApplicationMessage()
@@ -36,7 +41,7 @@ public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttCl
         }, cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task Subscribe(string topic, Func<MqttApplicationMessageReceivedEventArgs, Task> onMessageReceivedEvent, MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken? cancellationToken = null)
+    public async Task SubscribeAsync(string topic, Func<MqttApplicationMessageReceivedEventArgs, Task> onMessageReceivedEvent, MqttQualityOfServiceLevel qos = MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken? cancellationToken = null)
     {
         MqttClientSubscribeOptions mqttClientSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
             .WithTopicFilter(topic, qos)
@@ -46,7 +51,7 @@ public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttCl
 
         if (!ClientIsConnected)
         {
-            await Reconnect();
+            await ReconnectAsync();
         }
 
         await mqttClient.SubscribeAsync(mqttClientSubscribeOptions, cancellationToken ?? CancellationToken.None);
@@ -60,5 +65,10 @@ public class MqttService(MqttFactory mqttFactory, IMqttClient mqttClient, MqttCl
     public IMqttClient GetClient()
     {
         return mqttClient;
+    }
+
+    public void Dispose()
+    {
+        mqttClient.Dispose();
     }
 }
