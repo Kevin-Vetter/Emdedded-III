@@ -9,11 +9,11 @@ namespace ClimateSenseApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+//[Authorize]
 public class MeasurementController(IMeasurementRepository measurementRepository) : ControllerBase
 {
     [HttpGet("locations")]
-    [Authorize(Permissions.SensorRead)]
+    //[Authorize(Permissions.SensorRead)]
     public async Task<List<string>> GetList() => await measurementRepository.GetLocations();
     
 
