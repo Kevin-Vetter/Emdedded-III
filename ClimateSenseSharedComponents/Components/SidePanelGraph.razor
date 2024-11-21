@@ -12,7 +12,7 @@
     <RadzenStack  Orientation="Orientation.Vertical" Gap="4px">
         <RadzenSelectBar @onclick="() => GetRoomMeasurements(_times[_timesKey])"  @bind-Value="_timesKey" Data="@(_times.Keys)">
         </RadzenSelectBar>
-    </RadzenStack>
+    </RadzenStack> 
     <RadzenChart>
         <RadzenChartTooltipOptions Shared="@sharedTooltip"/>
         <RadzenLineSeries Smooth="@smooth" Data="@roomMeasurement" CategoryProperty="Timestamp" Title="@RoomName" LineType="LineType.Solid" ValueProperty="Value">
