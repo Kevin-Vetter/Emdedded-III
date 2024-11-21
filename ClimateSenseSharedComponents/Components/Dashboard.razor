@@ -1,16 +1,18 @@
 @using System.Text.Json
 @using Microsoft.AspNetCore.Authorization
 @using MQTTnet.Client
+@using Radzen
 @inject IApiService ApiService
 @inject IMqttService MqttService
 @attribute [Authorize(Roles = "Lord")]
+@inject DialogService DialogService
 
 <h3>Dashboard</h3>
 <div class="row gy-3">
     @foreach (DashboardRoom room in _rooms)
     {
         <div class="col col-sm-2 col-md-3">
-            <div class="card card-transition h-100 shadow-sm cursor-pointer">
+            <div @onclick="() => OpenSideDialog(room)" class="card card-transition h-100 shadow-sm cursor-pointer">
                 <div class="card-body">
                     <h4 class="card-title text-center pb-1 mb-2 border-bottom">@room.Location</h4>
                     <div class="card-text container">
@@ -47,6 +49,8 @@
 
 @code {
     private List<DashboardRoom> _rooms = [];
+    private DashboardRoom? selectedDashboardRoom { get; set; }
+    public string ShowRooms { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -86,4 +90,13 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    async Task OpenSideDialog(DashboardRoom room)
+    {
+        await DialogService.OpenSideAsync<SidePanelGraph>("Side Panel", new Dictionary<string, object>()
+        {
+            [nameof(SidePanelGraph.RoomName)] = room.Location
+        }, options: new SideDialogOptions { CloseDialogOnOverlayClick = true, Position = DialogPosition.Right, ShowMask = true, Width = "1000px" });
+    }
+
 }
+
