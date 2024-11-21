@@ -1,5 +1,6 @@
 @page "/login"
 @using ClimateSenseWeb.Dto
+@inject NavigationManager Navigation
 <PageTitle>ClimateSense Login</PageTitle>
 <h3>Login</h3>
 
@@ -26,7 +27,7 @@
 
     private void Callback()
     {
-        throw new NotImplementedException();
+        Navigation.NavigateTo("Account/Login");
     }
 
 }

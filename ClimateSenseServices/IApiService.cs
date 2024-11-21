@@ -1,4 +1,6 @@
 using ClimateSenseModels;
+using IdentityModel.OidcClient;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ClimateSenseServices;
 

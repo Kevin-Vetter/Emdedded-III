@@ -3,13 +3,20 @@ using System.Text;
 using System.Text.Json;
 using System.Web;
 using ClimateSenseModels;
+using Auth0.OidcClient;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
+using IdentityModel.OidcClient;
+
+
 
 namespace ClimateSenseServices;
 
 public class ApiService : IApiService
 {
-    HttpClient _client = new();
-    JsonSerializerOptions _serializerOptions = new()
+    private readonly HttpClient _client = new();
+
+    private readonly JsonSerializerOptions _serializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = true
