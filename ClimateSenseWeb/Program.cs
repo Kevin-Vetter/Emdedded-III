@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Auth0.AspNetCore.Authentication;
+using Auth0.OidcClient;
 using ClimateSenseServices;
 using ClimateSenseWeb.Components;
 using Microsoft.AspNetCore.Authentication;
@@ -18,9 +19,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IApiService, ApiService>();
 
+IConfigurationSection auth0 = builder.Configuration.GetSection("Auth0");
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
-    IConfigurationSection auth0 = builder.Configuration.GetSection("Auth0");
 
     options.Domain = auth0["Domain"]!;
     options.ClientId = auth0["ClientId"]!;
@@ -28,7 +29,24 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientSecret = auth0["ClientSecret"];
     options.Scope = "openid email profile";
 });
+
 builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("WriteAccess", policy =>
+                      policy.RequireClaim("permissions", "write:servo"))
+    .AddPolicy("ReadAccess", policy =>
+                      policy.RequireClaim("permissions", "read:sensor"));
+
+
+builder.Services.AddSingleton(new Auth0Client(new()
+{
+    Domain = auth0["Domain"],
+    ClientId = auth0["ClientId"],
+    RedirectUri = auth0["RedirectUri"],
+    PostLogoutRedirectUri = auth0["PostLogoutRedirectUri"],
+    Scope = auth0["Scope"]
+}));
 
 builder.Services.AddSingleton<MqttFactory>();
 builder.Services.AddSingleton<IMqttClient>(serviceProvider =>
@@ -77,6 +95,7 @@ app.MapGet("/Account/Login", async (HttpContext context, string returnUrl = "/")
 {
     AuthenticationProperties authenticationProperties = new LoginAuthenticationPropertiesBuilder().WithRedirectUri(returnUrl).Build();
     await context.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+    //Auth0Client client = new Auth0Client();
 });
 
 app.MapGet("/Account/Logout", async (HttpContext httpContext) =>

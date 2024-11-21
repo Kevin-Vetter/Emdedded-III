@@ -6,6 +6,7 @@ using Auth0.OidcClient;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.JsonWebTokens;
 using IdentityModel.OidcClient;
+using System.Threading.RateLimiting;
 
 
 
@@ -21,9 +22,11 @@ public class ApiService : IApiService
         WriteIndented = true
     };
 
-    public async Task<List<string>> GetLocations()
+    public async Task<List<string>> GetLocations(string token)
     {
+
         UriBuilder builder = new(Constants.BaseUrl) { Path = "Measurement/locations" };
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("authorization", token);
         HttpResponseMessage response = await _client.GetAsync(builder.Uri);
 
         response.EnsureSuccessStatusCode();

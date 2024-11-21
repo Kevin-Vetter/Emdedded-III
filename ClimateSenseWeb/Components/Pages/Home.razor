@@ -1,12 +1,17 @@
 ﻿@page "/"
+@inject Auth0Client _auth0Client
+@inject IApiService _apiService
 @using System.Security.Claims
 @using System.Text.Json
 @using System.Text.Json.Serialization
+@using Auth0.OidcClient
+@using ClimateSenseServices
+@using Microsoft.IdentityModel.JsonWebTokens
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-<Dashboard @rendermode="InteractiveServer"/>
-
+@* <Dashboard @rendermode="InteractiveServer"/> *@
+@* 
 <AuthorizeView>
     <Authorized>
         <p>IsInRole: @_authenticationState?.User.IsInRole("rol_4V5SuiKlx7sqNTeB")</p>
@@ -24,20 +29,24 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
+ *@
 @code{
-    [CascadingParameter]
-    public Task<AuthenticationState>? AuthentiationState { get; set; }
 
-    private AuthenticationState? _authenticationState;
+
+    // [CascadingParameter]
+    // public Task<AuthenticationState>? AuthentiationState { get; set; }
+
+    // private AuthenticationState? _authenticationState;
 
     protected override async Task OnInitializedAsync()
     {
-        if (AuthentiationState != null)
-        {
-            _authenticationState = await AuthentiationState;
-            StateHasChanged();
-        }
+        var result = await _auth0Client.LoginAsync();
+        var respone = _apiService.GetLocations(result.AccessToken);
+        // if (AuthentiationState != null)
+        // {
+        //     _authenticationState = await AuthentiationState;
+        //     StateHasChanged();
+        // }
 
         await base.OnInitializedAsync();
     }
