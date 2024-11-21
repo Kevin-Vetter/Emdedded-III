@@ -1,10 +1,15 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.Json;
 using Auth0.AspNetCore.Authentication;
 using Auth0.OidcClient;
 using ClimateSenseServices;
+using ClimateSenseWeb;
 using ClimateSenseWeb.Components;
+using ClimateSenseWeb.Middleware.HttpClientHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
@@ -17,7 +22,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddSingleton<IApiService, ApiService>();
 
 IConfigurationSection auth0 = builder.Configuration.GetSection("Auth0");
 builder.Services.AddAuth0WebAppAuthentication(options =>
@@ -28,9 +32,37 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.CallbackPath = auth0["RedirectUri"]!;
     options.ClientSecret = auth0["ClientSecret"];
     options.Scope = "openid email profile";
-});
-
+    // options.OpenIdConnectEvents = new OpenIdConnectEvents()
+    // {
+    //     OnTokenValidated = context =>
+    //     {
+    //         if (context.TokenEndpointResponse == null)
+    //         {
+    //             return Task.CompletedTask;
+    //         }
+    //
+    //         string accessToken = context.TokenEndpointResponse.AccessToken;
+    //
+    //         JwtSecurityToken securityToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
+    //
+    //         ((ClaimsIdentity?)context.Principal?.Identity).AddClaim(new Claim(ClaimTypes.Role, ""));
+    //
+    //         return Task.CompletedTask;
+    //     }
+    // };
+}).WithAccessToken(options => options.Audience = "climateSenseAPI");
 builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<TokenHandler>();
+
+
+IConfigurationSection apiSettings = builder.Configuration.GetSection("ClimateSenseApi");
+builder.Services.AddHttpClient("ClimateSenseApi", client => client.BaseAddress = new Uri(apiSettings["Host"]!))
+    .AddHttpMessageHandler<TokenHandler>();
+
+builder.Services.AddScoped(serviceProvider => serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("ClimateSenseApi"));
+builder.Services.AddScoped<IApiService, ApiService>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("WriteAccess", policy =>
@@ -71,7 +103,6 @@ builder.Services.AddSingleton<MqttClientOptionsBuilder>(_ =>
 });
 
 builder.Services.AddSingleton<IMqttService, MqttService>();
-builder.Services.AddMemoryCache();
 builder.Services.AddRadzenComponents();
 var app = builder.Build();
 

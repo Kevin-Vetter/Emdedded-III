@@ -10,26 +10,8 @@
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-@* <Dashboard @rendermode="InteractiveServer"/> *@
-@* 
-<AuthorizeView>
-    <Authorized>
-        <p>IsInRole: @_authenticationState?.User.IsInRole("rol_4V5SuiKlx7sqNTeB")</p>
+<Dashboard @rendermode="InteractiveServer"/>
 
-        <pre >
-            @JsonSerializer.Serialize(_authenticationState?.User, new JsonSerializerOptions()
-            {
-                ReferenceHandler = ReferenceHandler.Preserve,
-                WriteIndented = true
-            });
-        </pre>
-    </Authorized>
-    <NotAuthorized>
-        <p>Not authorized</p>
-    </NotAuthorized>
-</AuthorizeView>
-
- *@
 @code{
 
 

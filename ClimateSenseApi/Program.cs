@@ -37,8 +37,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               options.Authority = auth0["Domain"];
               options.Audience = auth0["Audience"];
 
-              options.TokenValidationParameters.RoleClaimType = "user_roles";
-
               options.Events = new JwtBearerEvents
               {
                   OnChallenge = context =>

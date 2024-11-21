@@ -12,22 +12,18 @@ using System.Threading.RateLimiting;
 
 namespace ClimateSenseServices;
 
-public class ApiService : IApiService
+public class ApiService(HttpClient httpClient) : IApiService
 {
-    private readonly HttpClient _client = new();
-
     private readonly JsonSerializerOptions _serializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = true
     };
 
-    public async Task<List<string>> GetLocations(string token)
+    public async Task<List<string>> GetLocations()
     {
-
-        UriBuilder builder = new(Constants.BaseUrl) { Path = "Measurement/locations" };
-        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("authorization", token);
-        HttpResponseMessage response = await _client.GetAsync(builder.Uri);
+        UriBuilder builder = new() { Path = "Measurement/locations" };
+        HttpResponseMessage response = await httpClient.GetAsync(builder.Path);
 
         response.EnsureSuccessStatusCode();
         string content = await response.Content.ReadAsStringAsync();
@@ -36,16 +32,13 @@ public class ApiService : IApiService
 
     public async Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type)
     {
-        string baseUrl = Constants.BaseUrl;
-
-        UriBuilder uriBuilder = new UriBuilder(new Uri(baseUrl))
+        UriBuilder uriBuilder = new UriBuilder()
         {
-            Path = "Measurement"
+            Path = "Measurement",
+            Query = $"location={location}&from={from?.ToString()}&measurementType={(int)type}"
         };
 
-        uriBuilder.Query = $"location={location}&from={from?.ToString()}&measurementType={(int)type}";
-
-        HttpResponseMessage httpResponseMessage = await _client.GetAsync(uriBuilder.Uri);
+        HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(uriBuilder.Path + uriBuilder.Query);
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
