@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 using ClimateSenseModels;
 
 namespace ClimateSenseServices;
@@ -33,12 +34,11 @@ public class ApiService : IApiService
             Path = "Measurement"
         };
 
-        uriBuilder.Query = $"location={location}&from={from?.ToString()}&measurementType={(int)type}";
-
+        uriBuilder.Query = $"location={location}&from={Uri.EscapeDataString(from?.ToString("o") ?? "")}&measurementType={(int)type}";
         HttpResponseMessage httpResponseMessage = await _client.GetAsync(uriBuilder.Uri);
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
-        return JsonSerializer.Deserialize<List<ClimateMeasurement>>(await httpResponseMessage.Content.ReadAsStringAsync()) ?? new List<ClimateMeasurement>();
+        return JsonSerializer.Deserialize<List<ClimateMeasurement>>(await httpResponseMessage.Content.ReadAsStringAsync(), _serializerOptions) ?? new List<ClimateMeasurement>();
     }
 }

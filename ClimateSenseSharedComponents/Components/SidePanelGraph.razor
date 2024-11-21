@@ -1,0 +1,83 @@
+@using System.Globalization
+@using Radzen
+@using Radzen.Blazor
+@inject IApiService ApiService
+
+
+<RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
+    <RadzenStack  Orientation="Orientation.Vertical" Gap="4px">
+        <RadzenSelectBar @onclick="() => GetRoomMeasurements(_times[_timesKey])"  @bind-Value="_measurementType" TextProperty="Text" ValueProperty="Value" TValue="@MeasurementType" Data="@(Enum.GetValues<MeasurementType>().Select(t => new { Text = $"{Enum.GetName(t)}", Value = t }))">
+        </RadzenSelectBar>
+    </RadzenStack>
+    <RadzenStack  Orientation="Orientation.Vertical" Gap="4px">
+        <RadzenSelectBar @onclick="() => GetRoomMeasurements(_times[_timesKey])"  @bind-Value="_timesKey" Data="@(_times.Keys)">
+        </RadzenSelectBar>
+    </RadzenStack>
+    <RadzenChart>
+        <RadzenChartTooltipOptions Shared="@sharedTooltip"/>
+        <RadzenLineSeries Smooth="@smooth" Data="@roomMeasurement" CategoryProperty="Timestamp" Title="@RoomName" LineType="LineType.Solid" ValueProperty="Value">
+            <RadzenMarkers Visible="@showMarkers" MarkerType="MarkerType.None"/>
+            <RadzenSeriesDataLabels Visible="@showDataLabels"/>
+        </RadzenLineSeries>
+        <RadzenCategoryAxis Padding="20"/>
+        <RadzenValueAxis Formatter="FormatAsValue" >
+            <RadzenGridLines Visible="true"/>
+            <RadzenAxisTitle Text="@Enum.GetName(_measurementType)"/>
+        </RadzenValueAxis>
+    </RadzenChart>
+    
+</RadzenStack>
+<RadzenButton Size="ButtonSize.ExtraSmall" Text="Close Side Dialog" Click="@(() => Service.CloseSide())" />
+@code {
+    [Inject] DialogService Service { get; set; }
+    [Parameter] public string RoomName { get; set; } = null!;
+    private MeasurementType _measurementType = MeasurementType.Temperature;
+    private string _timesKey = "Hour";
+    private Dictionary<string, DateTime> _times = new()
+    {
+        ["Hour"] = DateTime.Now.AddHours(-1),
+        ["Day"]=DateTime.Today,
+        ["Week"]=DateTime.Today.AddDays(- ((int)DateTime.Now.DayOfWeek + 1)),
+        
+    };
+    bool smooth = true;
+    bool sharedTooltip = true;
+    bool showDataLabels = false;
+    bool showMarkers = true;
+    private List<ClimateMeasurement> roomMeasurement { get; set; } = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            
+            await GetRoomMeasurements(DateTime.Now.AddHours(-1));
+    
+            StateHasChanged();
+        }
+    }
+
+    string FormatAsValue(object value)
+    {
+        return $"{value:F1}{DenominationDictionary.Denominations[_measurementType]}";
+    }
+
+    
+    
+    private async Task GetRoomMeasurements(DateTime? from)
+    {
+        roomMeasurement = await ApiService.GetMeasurements(RoomName,from,_measurementType);
+        roomMeasurement = roomMeasurement.Select(x => new ClimateMeasurement()
+        {
+            Timestamp = new DateTime(x.Timestamp.Year, x.Timestamp.Month, x.Timestamp.Day, x.Timestamp.Hour, x.Timestamp.Minute, 0),
+            MeasurementType = x.MeasurementType,
+            Value = x.Value,
+            Device = x.Device,
+            Location = x.Location
+        }).GroupBy(x => x.Timestamp, measurement => measurement, (time, measurements) => new ClimateMeasurement() {Timestamp = time, Value = measurements.Average(x => x.Value)}).ToList();
+        
+        StateHasChanged();
+    }
+
+}
