@@ -13,7 +13,7 @@ namespace ClimateSenseApi.Controllers;
 public class MeasurementController(IMeasurementRepository measurementRepository) : ControllerBase
 {
     [HttpGet("locations")]
-    [Authorize(Policy = "WriteAccess")]
+    [Authorize(Policy = "ReadAccess")]
     public async Task<List<string>> GetList() => await measurementRepository.GetLocations();
     
 

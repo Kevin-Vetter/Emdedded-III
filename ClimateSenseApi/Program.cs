@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using ClimateSenseModels;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,14 +23,43 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 builder.Services.AddOptions<AppSettings>().Bind(builder.Configuration);
 
 var auth0 = builder.Configuration.GetSection("Auth0");
 
-builder.Services
-    .AddAuthorizationBuilder()
-    .AddPolicy(Permissions.SensorRead, policy => policy.Requirements.Add(new HasScopeRequirement(Permissions.SensorRead, auth0["Domain"])));
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("WriteAccess", policy =>
+                      policy.RequireClaim("permissions", "write:servo"))
+    .AddPolicy("ReadAccess", policy =>
+                      policy.RequireClaim("permissions", "read:sensor"));
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
           .AddJwtBearer(options =>

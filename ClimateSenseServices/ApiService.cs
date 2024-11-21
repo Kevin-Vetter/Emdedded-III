@@ -25,9 +25,17 @@ public class ApiService(HttpClient httpClient) : IApiService
         UriBuilder builder = new() { Path = "Measurement/locations" };
         HttpResponseMessage response = await httpClient.GetAsync(builder.Path);
 
-        response.EnsureSuccessStatusCode();
-        string content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<string>>(content, _serializerOptions) ?? new List<string>();
+        try
+        {
+            response.EnsureSuccessStatusCode();
+            string content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<string>>(content, _serializerOptions) ?? new List<string>();
+        }
+        catch (Exception)
+        {
+            Debug.WriteLine(response.StatusCode);
+            return null;
+        }
     }
 
     public async Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type)

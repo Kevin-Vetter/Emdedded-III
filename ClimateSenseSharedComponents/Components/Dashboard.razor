@@ -1,10 +1,11 @@
 @using System.Text.Json
+@using ClimateSenseModels
+@using ClimateSenseServices
 @using Microsoft.AspNetCore.Authorization
 @using MQTTnet.Client
 @using Radzen
 @inject IApiService ApiService
 @inject IMqttService MqttService
-@attribute [Authorize(Roles = "Lord")]
 @inject DialogService DialogService
 
 <h3>Dashboard</h3>
@@ -32,7 +33,7 @@
 </div>
 
 <style>
-    .card:hover{
+    .card:hover {
         transform: scale(1.05);
         box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
     }
@@ -61,10 +62,14 @@
         if (firstRender)
         {
             List<string> locations = await ApiService.GetLocations();
-            _rooms = locations.Select(location => new DashboardRoom(location)).ToList();
-            StateHasChanged();
-            await MqttService.ConnectAsync();
-            await MqttService.SubscribeAsync($"location/+/measurement/+", OnMessageReceivedEvent);
+            if (locations != null)
+            {
+
+                _rooms = locations.Select(location => new DashboardRoom(location)).ToList();
+                StateHasChanged();
+                await MqttService.ConnectAsync();
+                await MqttService.SubscribeAsync($"location/+/measurement/+", OnMessageReceivedEvent);
+            }
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -92,9 +97,9 @@
     async Task OpenSideDialog(DashboardRoom room)
     {
         await DialogService.OpenSideAsync<SidePanelGraph>("Side Panel", new Dictionary<string, object>()
-        {
-            [nameof(SidePanelGraph.RoomName)] = room.Location
-        }, options: new SideDialogOptions { CloseDialogOnOverlayClick = true, Position = DialogPosition.Right, ShowMask = true, Width = "1000px" });
+            {
+                [nameof(SidePanelGraph.RoomName)] = room.Location
+            }, options: new SideDialogOptions { CloseDialogOnOverlayClick = true, Position = DialogPosition.Right, ShowMask = true, Width = "1000px" });
     }
 
 }

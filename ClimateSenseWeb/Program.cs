@@ -64,13 +64,6 @@ builder.Services.AddHttpClient("ClimateSenseApi", client => client.BaseAddress =
 builder.Services.AddScoped(serviceProvider => serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient("ClimateSenseApi"));
 builder.Services.AddScoped<IApiService, ApiService>();
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("WriteAccess", policy =>
-                      policy.RequireClaim("permissions", "write:servo"))
-    .AddPolicy("ReadAccess", policy =>
-                      policy.RequireClaim("permissions", "read:sensor"));
-
-
 builder.Services.AddSingleton(new Auth0Client(new()
 {
     Domain = auth0["Domain"],

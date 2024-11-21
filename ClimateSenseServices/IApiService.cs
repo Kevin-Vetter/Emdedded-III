@@ -7,6 +7,6 @@ namespace ClimateSenseServices;
 
 public interface IApiService
 {
-   Task<List<string>> GetLocations(string token);
+   Task<List<string>> GetLocations();
    Task<List<ClimateMeasurement>> GetMeasurements(string location, DateTime? from, MeasurementType type);
 }
