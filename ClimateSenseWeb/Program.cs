@@ -25,6 +25,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.Domain = auth0["Domain"]!;
     options.ClientId = auth0["ClientId"]!;
     options.CallbackPath = auth0["RedirectUri"]!;
+    options.ClientSecret = auth0["ClientSecret"];
     options.Scope = "openid email profile";
 });
 builder.Services.AddCascadingAuthenticationState();
@@ -75,7 +76,6 @@ app.UseAntiforgery();
 app.MapGet("/Account/Login", async (HttpContext context, string returnUrl = "/") =>
 {
     AuthenticationProperties authenticationProperties = new LoginAuthenticationPropertiesBuilder().WithRedirectUri(returnUrl).Build();
-
     await context.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
 });
 

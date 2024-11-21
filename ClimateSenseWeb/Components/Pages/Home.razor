@@ -1,39 +1,41 @@
 ﻿@page "/"
-@using ClimateSenseSharedComponents.Components
-@using ClimateSenseWeb.Middleware.Authentication
+@using System.Security.Claims
 @using System.Text.Json
+@using System.Text.Json.Serialization
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-<Dashboard @rendermode="InteractiveServer" />
+<Dashboard @rendermode="InteractiveServer"/>
+
 <AuthorizeView>
     <Authorized>
-        @if (_authenticationState!.User.Claims != null)
-        {
-            @foreach (var a in _authenticationState!.User!.Claims)
-            {
-                <pre>@JsonSerializer.Serialize(a)</pre>
-            }
+        <p>IsInRole: @_authenticationState?.User.IsInRole("rol_4V5SuiKlx7sqNTeB")</p>
 
-            @foreach (var a in _authenticationState!.User!.Identities)
+        <pre >
+            @JsonSerializer.Serialize(_authenticationState?.User, new JsonSerializerOptions()
             {
-                <pre>@JsonSerializer.Serialize(a)</pre>
-            }
-        }
+                ReferenceHandler = ReferenceHandler.Preserve,
+                WriteIndented = true
+            });
+        </pre>
     </Authorized>
+    <NotAuthorized>
+        <p>Not authorized</p>
+    </NotAuthorized>
 </AuthorizeView>
 
-@code {
+
+@code{
     [CascadingParameter]
-    public Task<AuthenticationState>? AuthenticationState { get; set; }
+    public Task<AuthenticationState>? AuthentiationState { get; set; }
 
     private AuthenticationState? _authenticationState;
 
     protected override async Task OnInitializedAsync()
     {
-        if (AuthenticationState != null)
+        if (AuthentiationState != null)
         {
-            _authenticationState = await AuthenticationState;
+            _authenticationState = await AuthentiationState;
             StateHasChanged();
         }
 
@@ -41,4 +43,3 @@
     }
 
 }
-

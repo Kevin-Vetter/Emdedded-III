@@ -13,8 +13,9 @@ namespace ClimateSenseServices;
 
 public class ApiService : IApiService
 {
-    HttpClient _client = new();
-    JsonSerializerOptions _serializerOptions = new()
+    private readonly HttpClient _client = new();
+
+    private readonly JsonSerializerOptions _serializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = true
@@ -45,6 +46,6 @@ public class ApiService : IApiService
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
-        return JsonSerializer.Deserialize<List<ClimateMeasurement>>(await httpResponseMessage.Content.ReadAsStringAsync()) ?? new List<ClimateMeasurement>();
+        return JsonSerializer.Deserialize<List<ClimateMeasurement>>(await httpResponseMessage.Content.ReadAsStringAsync(), _serializerOptions) ?? new List<ClimateMeasurement>();
     }
 }
