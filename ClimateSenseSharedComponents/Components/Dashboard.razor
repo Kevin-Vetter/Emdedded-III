@@ -1,7 +1,9 @@
 @using System.Text.Json
+@using Microsoft.AspNetCore.Authorization
 @using MQTTnet.Client
 @inject IApiService ApiService
 @inject IMqttService MqttService
+@attribute [Authorize(Roles = "Lord")]
 
 <h3>Dashboard</h3>
 <div class="row gy-3">
