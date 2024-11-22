@@ -19,5 +19,10 @@
             {"Username", "dotnet"},
             {"Password", "haSGlWNJemJOVTpR"},
         };
+
+        public static Dictionary<string, string> ClimateSenseApi = new()
+        {
+            ["Host"] = "https://4hnwj87h-6001.euw.devtunnels.ms"
+        };
     }
 }

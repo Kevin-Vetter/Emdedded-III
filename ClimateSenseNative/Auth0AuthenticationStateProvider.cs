@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Principal;
 using Auth0.OidcClient;
 using IdentityModel.OidcClient;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -24,11 +25,16 @@ public class Auth0AuthenticationStateProvider(Auth0Client auth0Client) : Authent
 
     private async Task<AuthenticationState> LoginWithAuth0Async()
     {
-        LoginResult result = await auth0Client.LoginAsync();
+        LoginResult result = await auth0Client.LoginAsync(new { audience = Appsettings.Auth0["Audience"] });
 
         if (!result.IsError)
         {
-            _currentUser = result.User;
+            IIdentity? identity = result.User.Identity;
+            if (identity != null)
+            {
+                _currentUser = new ClaimsPrincipal(new ClaimsIdentity(identity, result.User.Claims, identity.AuthenticationType, "name", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")) ;
+            }
+
             TokenHolder.AccessToken = result.AccessToken;
         }
 

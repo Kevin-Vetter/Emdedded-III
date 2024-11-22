@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 
 namespace ClimateSenseNative;
@@ -8,6 +9,7 @@ public class TokenHandler : DelegatingHandler
     {
         request.Headers.Authorization =
             new AuthenticationHeaderValue("Bearer", TokenHolder.AccessToken);
+
         return await base.SendAsync(request, cancellationToken);
     }
 }
