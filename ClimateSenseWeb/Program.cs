@@ -5,10 +5,12 @@ using Auth0.AspNetCore.Authentication;
 using ClimateSenseServices;
 using ClimateSenseWeb;
 using ClimateSenseWeb.Components;
+using ClimateSenseWeb.Middleware.Authentication;
 using ClimateSenseWeb.Middleware.HttpClientHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Components.Authorization;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Formatter;
@@ -19,8 +21,8 @@ using Radzen.Blazor;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
@@ -28,29 +30,11 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 
     options.Domain = auth0["Domain"]!;
     options.ClientId = auth0["ClientId"]!;
-    options.CallbackPath = auth0["RedirectUri"]!;
     options.ClientSecret = auth0["ClientSecret"];
-    options.Scope = "openid email profile";
-    // options.OpenIdConnectEvents = new OpenIdConnectEvents()
-    // {
-    //     OnTokenValidated = context =>
-    //     {
-    //         if (context.TokenEndpointResponse == null)
-    //         {
-    //             return Task.CompletedTask;
-    //         }
-    //
-    //         string accessToken = context.TokenEndpointResponse.AccessToken;
-    //
-    //         JwtSecurityToken securityToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
-    //
-    //         ((ClaimsIdentity?)context.Principal?.Identity).AddClaim(new Claim(ClaimTypes.Role, ""));
-    //
-    //         return Task.CompletedTask;
-    //     }
-    // };
 }).WithAccessToken(options => options.Audience = "climateSenseAPI");
-builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenHandler>();

@@ -9,5 +9,6 @@ namespace ClimateSenseModels
     public static class Permissions
     {
         public const string SensorRead = "read:sensor";
+        public const string ServoWrite = "write:servo";
     }
 }

@@ -4,7 +4,6 @@
 @using Radzen
 @inject IApiService ApiService
 @inject IMqttService MqttService
-@attribute [Authorize(Roles = "Lord")]
 @inject DialogService DialogService
 
 <h3>Dashboard</h3>
@@ -91,10 +90,10 @@
 
     async Task OpenSideDialog(DashboardRoom room)
     {
-        await DialogService.OpenSideAsync<SidePanelGraph>("Side Panel", new Dictionary<string, object>()
+        await DialogService.OpenSideAsync<SidePanelGraph>(room.Location, new Dictionary<string, object>()
         {
             [nameof(SidePanelGraph.RoomName)] = room.Location
-        }, options: new SideDialogOptions { CloseDialogOnOverlayClick = true, Position = DialogPosition.Right, ShowMask = true, Width = "1000px" });
+        }, options: new SideDialogOptions { CloseDialogOnOverlayClick = true, Position = DialogPosition.Right, ShowMask = true, Width = "1000px", ShowClose = true });
     }
 
 }

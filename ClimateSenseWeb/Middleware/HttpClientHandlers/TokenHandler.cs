@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 
 namespace ClimateSenseWeb.Middleware.HttpClientHandlers;
@@ -15,7 +14,7 @@ public class TokenHandler(IHttpContextAccessor contextAccessor) : DelegatingHand
         }
         string? token = await contextAccessor.HttpContext.GetTokenAsync("access_token");
 
-        request.Headers.Authorization = new AuthenticationHeaderValue(OidcConstants.TokenRequestTypes.Bearer, token);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         return await base.SendAsync(request, cancellationToken);
     }

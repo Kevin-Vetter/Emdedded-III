@@ -1,5 +1,7 @@
 using System.Text;
+using ClimateSenseModels;
 using ClimateSenseServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MQTTnet;
@@ -30,6 +32,7 @@ public class ActionController(ILogger<ActionController> logger, IMqttService mqt
     }
 
     [HttpPost("servo")]
+    [Authorize(Permissions.ServoWrite)]
     public async Task<bool> Servo(int turnDegrees)
     {
         MqttClientPublishResult result = await mqttService.PublishAsync($"{_topic}/servo", turnDegrees);

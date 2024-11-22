@@ -1,0 +1,33 @@
+@page "/login"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<div>
+    <div>
+        <p>Welcome to ClimateSense!</p>
+        <p>
+            <strong>
+                <i>Effortless Climate Monitoring</i>
+            </strong>
+            Stay on top of your indoor environment with ClimateSense.
+            View
+            <strong>
+                <i>real-time</i>
+            </strong> temperature and humidity data and
+            <strong>
+                <i>take control</i>
+            </strong>
+            when needed.
+        </p>
+    </div>
+
+    <button class="btn btn-primary" @onclick="LoginAsync">Login</button>
+</div>
+
+@code {
+    private async Task LoginAsync()
+    {
+        await ((Auth0AuthenticationStateProvider)AuthenticationStateProvider).LoginAsync();
+        Navigation.NavigateTo("/");
+    }
+}

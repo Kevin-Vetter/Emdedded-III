@@ -3,9 +3,15 @@
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @rendermode InteractiveServer
+@attribute [Authorize]
 <PageTitle>Home</PageTitle>
 
-<Dashboard @rendermode="InteractiveServer"/>
+<AuthorizeView Roles="Lord">
+    <Authorized>
+        <Dashboard />
+    </Authorized>
+</AuthorizeView>
+
 
 @code{
     [CascadingParameter]
