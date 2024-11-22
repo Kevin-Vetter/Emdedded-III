@@ -1,0 +1,27 @@
+﻿@page "/"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using Microsoft.AspNetCore.Components.Authorization
+@using ClimateSenseSharedComponents.Components
+
+<AuthorizeView Roles="Lord">
+    <Authorized>
+        <Dashboard/>
+    </Authorized>
+</AuthorizeView>
+
+@code
+{
+    private AuthenticationState? _authenticationState;
+    [Inject] AuthenticationStateProvider? AuthenticationStateProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationStateProvider != null)
+        {
+            _authenticationState = await ((Auth0AuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
+            StateHasChanged();
+        }
+        await base.OnInitializedAsync();
+    }
+}
