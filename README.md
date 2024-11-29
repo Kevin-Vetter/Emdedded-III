@@ -147,9 +147,9 @@ $Mauiversion = 8.0.0;
 
 ## Contributing
 
-- Elias ~~
+- Elias
 - Kevin
-- Max ~~Slave~~
+- Max
 
 
 
